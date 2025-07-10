@@ -873,54 +873,130 @@
         }
 
         // Exportar para PDF
-       function exportarParaPDF() {
+      function exportarParaPDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF({
-        orientation: 'portrait',
+        orientation: 'landscape', // Alterado para paisagem para mais espaço
         unit: 'mm',
         format: 'a4'
     });
-    
-    // Configurações iniciais
-    const marginLeft = 10;
-    const marginRight = 10;
-    const pageWidth = doc.internal.pageSize.getWidth() - marginLeft - marginRight;
-    let y = 20;
-    
+
+    // Configurações
+    const margin = 10;
+    const pageWidth = doc.internal.pageSize.getWidth() - margin * 2;
+    let y = 15;
+
     // Estilos
     const styles = {
-        title: { fontSize: 16, fontStyle: 'bold', textColor: [40, 53, 147] },
-        subtitle: { fontSize: 12, fontStyle: 'bold', textColor: [67, 97, 238] },
-        header: { fontSize: 10, fontStyle: 'bold', textColor: [255, 255, 255], fillColor: [67, 97, 238] },
-        body: { fontSize: 9, textColor: [0, 0, 0] },
-        total: { fontSize: 11, fontStyle: 'bold', textColor: [0, 0, 0] }
+        title: { size: 16, style: 'bold', color: [40, 53, 147] },
+        header: { size: 10, style: 'bold', color: [255, 255, 255], fill: [67, 97, 238] },
+        body: { size: 9, style: 'normal', color: [0, 0, 0] },
+        total: { size: 11, style: 'bold', color: [0, 0, 0] }
     };
-    
-    // Função para adicionar nova página se necessário
-    const checkPageBreak = (requiredSpace) => {
-        if (y + requiredSpace > doc.internal.pageSize.getHeight() - 20) {
-            doc.addPage();
-            y = 20;
-            return true;
-        }
-        return false;
-    };
-    
+
+    // Função para adicionar cabeçalho da tabela
+    function addTableHeader(doc, yPos) {
+        doc.setFontSize(styles.header.size);
+        doc.setTextColor(...styles.header.color);
+        doc.setFont(undefined, styles.header.style);
+        doc.setFillColor(...styles.header.fill);
+        
+        // Desenha retângulo do cabeçalho
+        doc.rect(margin, yPos, pageWidth, 8, 'F');
+        
+        // Posições das colunas (em mm a partir da margem esquerda)
+        const cols = [
+            { x: margin + 2, text: "Data", width: 15 },
+            { x: margin + 20, text: "Motorista", width: 25 },
+            { x: margin + 48, text: "Colaborador", width: 25 },
+            { x: margin + 76, text: "Cliente", width: 30 },
+            { x: margin + 109, text: "Origem", width: 30 },
+            { x: margin + 142, text: "Destino", width: 30 },
+            { x: margin + 175, text: "Valor (R$)", width: 20, align: "right" },
+            { x: margin + 198, text: "Observações", width: 40 }
+        ];
+
+        // Adiciona textos do cabeçalho
+        cols.forEach(col => {
+            doc.text(col.text, col.x, yPos + 5, { align: col.align || 'left' });
+        });
+
+        return yPos + 8;
+    }
+
+    // Função para adicionar linha da tabela
+    function addTableRow(doc, viagem, yPos) {
+        doc.setFontSize(styles.body.size);
+        doc.setTextColor(...styles.body.color);
+        doc.setFont(undefined, styles.body.style);
+
+        // Quebra textos longos em múltiplas linhas
+        const motoristaLines = doc.splitTextToSize(viagem.motorista, 25);
+        const colaboradorLines = doc.splitTextToSize(viagem.colaborador, 25);
+        const clienteLines = doc.splitTextToSize(viagem.cliente, 30);
+        const origemLines = doc.splitTextToSize(viagem.origem, 30);
+        const destinoLines = doc.splitTextToSize(viagem.destino, 30);
+        const obsLines = viagem.observacoes ? doc.splitTextToSize(viagem.observacoes, 40) : [""];
+
+        // Calcula quantas linhas extras serão necessárias
+        const lineCount = Math.max(
+            motoristaLines.length,
+            colaboradorLines.length,
+            clienteLines.length,
+            origemLines.length,
+            destinoLines.length,
+            obsLines.length
+        );
+
+        // Desenha os valores
+        doc.text(formatarData(viagem.data), margin + 2, yPos + 4);
+        
+        motoristaLines.forEach((line, i) => {
+            doc.text(line, margin + 20, yPos + 4 + (i * 4));
+        });
+        
+        colaboradorLines.forEach((line, i) => {
+            doc.text(line, margin + 48, yPos + 4 + (i * 4));
+        });
+        
+        clienteLines.forEach((line, i) => {
+            doc.text(line, margin + 76, yPos + 4 + (i * 4));
+        });
+        
+        origemLines.forEach((line, i) => {
+            doc.text(line, margin + 109, yPos + 4 + (i * 4));
+        });
+        
+        destinoLines.forEach((line, i) => {
+            doc.text(line, margin + 142, yPos + 4 + (i * 4));
+        });
+        
+        doc.text(viagem.valor.toFixed(2).replace('.', ','), margin + 185, yPos + 4, { align: "right" });
+        
+        obsLines.forEach((line, i) => {
+            doc.text(line, margin + 198, yPos + 4 + (i * 4));
+        });
+
+        // Linha divisória
+        doc.setDrawColor(200, 200, 200);
+        doc.line(margin, yPos + 5 + ((lineCount - 1) * 4), margin + pageWidth, yPos + 5 + ((lineCount - 1) * 4));
+
+        return yPos + 5 + ((lineCount - 1) * 4) + 5;
+    }
+
     // Título do documento
-    doc.setFontSize(styles.title.fontSize);
-    doc.setTextColor(...styles.title.textColor);
-    doc.setFont(undefined, styles.title.fontStyle);
-    doc.text('Relatório de Viagens', doc.internal.pageSize.getWidth() / 2, y, { align: 'center' });
+    doc.setFontSize(styles.title.size);
+    doc.setTextColor(...styles.title.color);
+    doc.setFont(undefined, styles.title.style);
+    doc.text('Relatório de Viagens', margin + pageWidth / 2, y, { align: 'center' });
     y += 10;
-    
+
     // Data de emissão
-    const hoje = new Date().toLocaleDateString('pt-BR');
     doc.setFontSize(10);
     doc.setTextColor(100, 100, 100);
-    doc.setFont(undefined, 'normal');
-    doc.text(`Emitido em: ${hoje}`, doc.internal.pageSize.getWidth() / 2, y, { align: 'center' });
-    y += 15;
-    
+    doc.text(`Emitido em: ${new Date().toLocaleDateString('pt-BR')}`, margin + pageWidth / 2, y, { align: 'center' });
+    y += 10;
+
     // Agrupar viagens por veículo
     const veiculos = {};
     viagensFiltradas.forEach(viagem => {
@@ -929,137 +1005,97 @@
         }
         veiculos[viagem.veiculo][viagem.tipo].push(viagem);
     });
-    
-    // Larguras das colunas (em mm)
-    const columnWidths = {
-        data: 20,
-        motorista: 25,
-        colaborador: 25,
-        cliente: 25,
-        rota: 40,
-        valor: 20,
-        obs: 25
-    };
-    
-    // Posições das colunas (calculadas dinamicamente)
-    const colPositions = {
-        data: marginLeft + 2,
-        motorista: marginLeft + columnWidths.data + 5,
-        colaborador: marginLeft + columnWidths.data + columnWidths.motorista + 5,
-        cliente: marginLeft + columnWidths.data + columnWidths.motorista + columnWidths.colaborador + 5,
-        rota: marginLeft + columnWidths.data + columnWidths.motorista + columnWidths.colaborador + columnWidths.cliente + 5,
-        valor: marginLeft + columnWidths.data + columnWidths.motorista + columnWidths.colaborador + columnWidths.cliente + columnWidths.rota + 5,
-        obs: marginLeft + columnWidths.data + columnWidths.motorista + columnWidths.colaborador + columnWidths.cliente + columnWidths.rota + columnWidths.valor + 5
-    };
-    
-    // Verificar se as colunas cabem na página
-    const totalWidth = Object.values(columnWidths).reduce((a, b) => a + b, 0) + (Object.keys(columnWidths).length * 5);
-    if (totalWidth > pageWidth) {
-        alert('Aviso: Algumas colunas podem estar muito estreitas no PDF devido à quantidade de informações. Considere filtrar os dados ou exportar para Excel para mais detalhes.');
-    }
-    
+
     // Adicionar conteúdo para cada veículo
     for (const veiculo in veiculos) {
-        // Verificar espaço antes de adicionar novo veículo
-        checkPageBreak(30);
-        
+        // Verificar espaço para o cabeçalho do veículo
+        if (y > 180) {
+            doc.addPage();
+            y = 15;
+        }
+
         // Título do veículo
-        doc.setFontSize(styles.subtitle.fontSize);
-        doc.setTextColor(...styles.subtitle.textColor);
-        doc.setFont(undefined, styles.subtitle.fontStyle);
-        doc.text(`Veículo: ${veiculo}`, marginLeft, y);
+        doc.setFontSize(styles.title.size - 2);
+        doc.setTextColor(...styles.title.color);
+        doc.text(`Veículo: ${veiculo}`, margin, y);
         y += 8;
-        
+
         // Seção de IDA
         if (veiculos[veiculo].ida.length > 0) {
-            doc.setFontSize(styles.subtitle.fontSize - 1);
-            doc.setTextColor(...styles.subtitle.textColor);
-            doc.text('Viagens de Ida:', marginLeft, y);
+            if (y > 170) {
+                doc.addPage();
+                y = 15;
+            }
+
+            doc.setFontSize(styles.body.size + 1);
+            doc.text('Viagens de Ida:', margin, y);
             y += 6;
-            
+
             // Cabeçalho da tabela
-            doc.setFontSize(styles.header.fontSize);
-            doc.setTextColor(...styles.header.textColor);
-            doc.setFillColor(...styles.header.fillColor);
-            doc.rect(marginLeft, y, pageWidth, 6, 'F');
-            
-            // Texto do cabeçalho
-            doc.text('Data', colPositions.data, y + 4);
-            doc.text('Motorista', colPositions.motorista, y + 4);
-            doc.text('Colaborador', colPositions.colaborador, y + 4);
-            doc.text('Cliente', colPositions.cliente, y + 4);
-            doc.text('Origem → Destino', colPositions.rota, y + 4);
-            doc.text('Valor (R$)', colPositions.valor, y + 4);
-            doc.text('Obs', colPositions.obs, y + 4);
-            y += 6;
-            
-            // Conteúdo da tabela
-            doc.setFontSize(styles.body.fontSize);
-            doc.setTextColor(...styles.body.textColor);
-            doc.setFont(undefined, 'normal');
-            
+            y = addTableHeader(doc, y);
+
+            // Adicionar viagens
             veiculos[veiculo].ida.forEach(viagem => {
-                checkPageBreak(6); // Verificar se precisa de nova página
-                
-                // Formatar texto longo para caber na célula
-                const motorista = doc.splitTextToSize(viagem.motorista, columnWidths.motorista - 2);
-                const colaborador = doc.splitTextToSize(viagem.colaborador, columnWidths.colaborador - 2);
-                const cliente = doc.splitTextToSize(viagem.cliente, columnWidths.cliente - 2);
-                const rota = doc.splitTextToSize(`${viagem.origem} → ${viagem.destino}`, columnWidths.rota - 2);
-                const obs = viagem.observacoes ? doc.splitTextToSize(viagem.observacoes, columnWidths.obs - 2) : [''];
-                
-                // Altura da linha baseada no maior conjunto de linhas divididas
-                const lineCount = Math.max(
-                    motorista.length, 
-                    colaborador.length, 
-                    cliente.length, 
-                    rota.length,
-                    obs.length
-                );
-                
-                // Desenhar conteúdo
-                doc.text(formatarData(viagem.data), colPositions.data, y + 4);
-                
-                // Motorista (multilinha se necessário)
-                motorista.forEach((line, i) => {
-                    doc.text(line, colPositions.motorista, y + 4 + (i * 3.5));
-                });
-                
-                // Colaborador (multilinha se necessário)
-                colaborador.forEach((line, i) => {
-                    doc.text(line, colPositions.colaborador, y + 4 + (i * 3.5));
-                });
-                
-                // Cliente (multilinha se necessário)
-                cliente.forEach((line, i) => {
-                    doc.text(line, colPositions.cliente, y + 4 + (i * 3.5));
-                });
-                
-                // Rota (multilinha se necessário)
-                rota.forEach((line, i) => {
-                    doc.text(line, colPositions.rota, y + 4 + (i * 3.5));
-                });
-                
-                // Valor (alinhado à direita)
-                doc.text(viagem.valor.toFixed(2).replace('.', ','), colPositions.valor, y + 4, { align: 'right' });
-                
-                // Observações (multilinha se necessário)
-                obs.forEach((line, i) => {
-                    doc.text(line, colPositions.obs, y + 4 + (i * 3.5));
-                });
-                
-                // Ajustar altura da linha baseada no conteúdo
-                y += 5 + ((lineCount - 1) * 3.5);
+                if (y > 190) {
+                    doc.addPage();
+                    y = 15;
+                    y = addTableHeader(doc, y); // Adiciona cabeçalho novamente
+                }
+                y = addTableRow(doc, viagem, y);
             });
-            
+
             // Subtotal
-            const subtotalIda = veiculos[veiculo].ida.reduce((sum, viagem) => sum + viagem.valor, 0);
-            doc.setFontSize(styles.total.fontSize);
-            doc.setFont(undefined, styles.total.fontStyle);
-            doc.text(`Subtotal Ida: R$ ${subtotalIda.toFixed(2).replace('.', ',')}`, 
-                     marginLeft + pageWidth - 20, y + 4, { align: 'right' });
+            const subtotal = veiculos[veiculo].ida.reduce((sum, v) => sum + v.valor, 0);
+            doc.setFontSize(styles.total.size);
+            doc.setFont(undefined, styles.total.style);
+            doc.text(`Subtotal Ida: R$ ${subtotal.toFixed(2).replace('.', ',')}`, 
+                    margin + pageWidth - 10, y, { align: 'right' });
             y += 10;
         }
+
+        // Seção de VOLTA
+        if (veiculos[veiculo].volta.length > 0) {
+            if (y > 170) {
+                doc.addPage();
+                y = 15;
+            }
+
+            doc.setFontSize(styles.body.size + 1);
+            doc.text('Viagens de Volta:', margin, y);
+            y += 6;
+
+            // Cabeçalho da tabela
+            y = addTableHeader(doc, y);
+
+            // Adicionar viagens
+            veiculos[veiculo].volta.forEach(viagem => {
+                if (y > 190) {
+                    doc.addPage();
+                    y = 15;
+                    y = addTableHeader(doc, y); // Adiciona cabeçalho novamente
+                }
+                y = addTableRow(doc, viagem, y);
+            });
+
+            // Subtotal
+            const subtotal = veiculos[veiculo].volta.reduce((sum, v) => sum + v.valor, 0);
+            doc.setFontSize(styles.total.size);
+            doc.setFont(undefined, styles.total.style);
+            doc.text(`Subtotal Volta: R$ ${subtotal.toFixed(2).replace('.', ',')}`, 
+                    margin + pageWidth - 10, y, { align: 'right' });
+            y += 15;
+        }
+    }
+
+    // Total geral
+    const totalGeral = viagensFiltradas.reduce((sum, v) => sum + v.valor, 0);
+    doc.setFontSize(styles.total.size + 1);
+    doc.text(`Total Geral: R$ ${totalGeral.toFixed(2).replace('.', ',')}`, 
+            margin + pageWidth - 10, y, { align: 'right' });
+
+    // Salvar o PDF
+    doc.save(`Relatorio_Viagens_${new Date().toISOString().slice(0, 10)}.pdf`);
+}
         
         // Seção de VOLTA
         if (veiculos[veiculo].volta.length > 0) {
