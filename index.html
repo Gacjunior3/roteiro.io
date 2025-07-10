@@ -873,148 +873,308 @@
         }
 
         // Exportar para PDF
-        function exportarParaPDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
+       function exportarParaPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4'
+    });
+    
+    // Configurações iniciais
+    const marginLeft = 10;
+    const marginRight = 10;
+    const pageWidth = doc.internal.pageSize.getWidth() - marginLeft - marginRight;
+    let y = 20;
+    
+    // Estilos
+    const styles = {
+        title: { fontSize: 16, fontStyle: 'bold', textColor: [40, 53, 147] },
+        subtitle: { fontSize: 12, fontStyle: 'bold', textColor: [67, 97, 238] },
+        header: { fontSize: 10, fontStyle: 'bold', textColor: [255, 255, 255], fillColor: [67, 97, 238] },
+        body: { fontSize: 9, textColor: [0, 0, 0] },
+        total: { fontSize: 11, fontStyle: 'bold', textColor: [0, 0, 0] }
+    };
+    
+    // Função para adicionar nova página se necessário
+    const checkPageBreak = (requiredSpace) => {
+        if (y + requiredSpace > doc.internal.pageSize.getHeight() - 20) {
+            doc.addPage();
+            y = 20;
+            return true;
+        }
+        return false;
+    };
+    
+    // Título do documento
+    doc.setFontSize(styles.title.fontSize);
+    doc.setTextColor(...styles.title.textColor);
+    doc.setFont(undefined, styles.title.fontStyle);
+    doc.text('Relatório de Viagens', doc.internal.pageSize.getWidth() / 2, y, { align: 'center' });
+    y += 10;
+    
+    // Data de emissão
+    const hoje = new Date().toLocaleDateString('pt-BR');
+    doc.setFontSize(10);
+    doc.setTextColor(100, 100, 100);
+    doc.setFont(undefined, 'normal');
+    doc.text(`Emitido em: ${hoje}`, doc.internal.pageSize.getWidth() / 2, y, { align: 'center' });
+    y += 15;
+    
+    // Agrupar viagens por veículo
+    const veiculos = {};
+    viagensFiltradas.forEach(viagem => {
+        if (!veiculos[viagem.veiculo]) {
+            veiculos[viagem.veiculo] = { ida: [], volta: [] };
+        }
+        veiculos[viagem.veiculo][viagem.tipo].push(viagem);
+    });
+    
+    // Larguras das colunas (em mm)
+    const columnWidths = {
+        data: 20,
+        motorista: 25,
+        colaborador: 25,
+        cliente: 25,
+        rota: 40,
+        valor: 20,
+        obs: 25
+    };
+    
+    // Posições das colunas (calculadas dinamicamente)
+    const colPositions = {
+        data: marginLeft + 2,
+        motorista: marginLeft + columnWidths.data + 5,
+        colaborador: marginLeft + columnWidths.data + columnWidths.motorista + 5,
+        cliente: marginLeft + columnWidths.data + columnWidths.motorista + columnWidths.colaborador + 5,
+        rota: marginLeft + columnWidths.data + columnWidths.motorista + columnWidths.colaborador + columnWidths.cliente + 5,
+        valor: marginLeft + columnWidths.data + columnWidths.motorista + columnWidths.colaborador + columnWidths.cliente + columnWidths.rota + 5,
+        obs: marginLeft + columnWidths.data + columnWidths.motorista + columnWidths.colaborador + columnWidths.cliente + columnWidths.rota + columnWidths.valor + 5
+    };
+    
+    // Verificar se as colunas cabem na página
+    const totalWidth = Object.values(columnWidths).reduce((a, b) => a + b, 0) + (Object.keys(columnWidths).length * 5);
+    if (totalWidth > pageWidth) {
+        alert('Aviso: Algumas colunas podem estar muito estreitas no PDF devido à quantidade de informações. Considere filtrar os dados ou exportar para Excel para mais detalhes.');
+    }
+    
+    // Adicionar conteúdo para cada veículo
+    for (const veiculo in veiculos) {
+        // Verificar espaço antes de adicionar novo veículo
+        checkPageBreak(30);
+        
+        // Título do veículo
+        doc.setFontSize(styles.subtitle.fontSize);
+        doc.setTextColor(...styles.subtitle.textColor);
+        doc.setFont(undefined, styles.subtitle.fontStyle);
+        doc.text(`Veículo: ${veiculo}`, marginLeft, y);
+        y += 8;
+        
+        // Seção de IDA
+        if (veiculos[veiculo].ida.length > 0) {
+            doc.setFontSize(styles.subtitle.fontSize - 1);
+            doc.setTextColor(...styles.subtitle.textColor);
+            doc.text('Viagens de Ida:', marginLeft, y);
+            y += 6;
             
-            // Título do documento
-            doc.setFontSize(18);
-            doc.text('Relatório de Viagens', 105, 15, { align: 'center' });
+            // Cabeçalho da tabela
+            doc.setFontSize(styles.header.fontSize);
+            doc.setTextColor(...styles.header.textColor);
+            doc.setFillColor(...styles.header.fillColor);
+            doc.rect(marginLeft, y, pageWidth, 6, 'F');
             
-            // Data de emissão
-            const hoje = new Date().toLocaleDateString();
-            doc.setFontSize(10);
-            doc.text(`Emitido em: ${hoje}`, 105, 22, { align: 'center' });
+            // Texto do cabeçalho
+            doc.text('Data', colPositions.data, y + 4);
+            doc.text('Motorista', colPositions.motorista, y + 4);
+            doc.text('Colaborador', colPositions.colaborador, y + 4);
+            doc.text('Cliente', colPositions.cliente, y + 4);
+            doc.text('Origem → Destino', colPositions.rota, y + 4);
+            doc.text('Valor (R$)', colPositions.valor, y + 4);
+            doc.text('Obs', colPositions.obs, y + 4);
+            y += 6;
             
-            let y = 30;
+            // Conteúdo da tabela
+            doc.setFontSize(styles.body.fontSize);
+            doc.setTextColor(...styles.body.textColor);
+            doc.setFont(undefined, 'normal');
             
-            // Agrupar viagens por veículo
-            const veiculos = {};
-            viagensFiltradas.forEach(viagem => {
-                if (!veiculos[viagem.veiculo]) {
-                    veiculos[viagem.veiculo] = { ida: [], volta: [] };
-                }
-                veiculos[viagem.veiculo][viagem.tipo].push(viagem);
+            veiculos[veiculo].ida.forEach(viagem => {
+                checkPageBreak(6); // Verificar se precisa de nova página
+                
+                // Formatar texto longo para caber na célula
+                const motorista = doc.splitTextToSize(viagem.motorista, columnWidths.motorista - 2);
+                const colaborador = doc.splitTextToSize(viagem.colaborador, columnWidths.colaborador - 2);
+                const cliente = doc.splitTextToSize(viagem.cliente, columnWidths.cliente - 2);
+                const rota = doc.splitTextToSize(`${viagem.origem} → ${viagem.destino}`, columnWidths.rota - 2);
+                const obs = viagem.observacoes ? doc.splitTextToSize(viagem.observacoes, columnWidths.obs - 2) : [''];
+                
+                // Altura da linha baseada no maior conjunto de linhas divididas
+                const lineCount = Math.max(
+                    motorista.length, 
+                    colaborador.length, 
+                    cliente.length, 
+                    rota.length,
+                    obs.length
+                );
+                
+                // Desenhar conteúdo
+                doc.text(formatarData(viagem.data), colPositions.data, y + 4);
+                
+                // Motorista (multilinha se necessário)
+                motorista.forEach((line, i) => {
+                    doc.text(line, colPositions.motorista, y + 4 + (i * 3.5));
+                });
+                
+                // Colaborador (multilinha se necessário)
+                colaborador.forEach((line, i) => {
+                    doc.text(line, colPositions.colaborador, y + 4 + (i * 3.5));
+                });
+                
+                // Cliente (multilinha se necessário)
+                cliente.forEach((line, i) => {
+                    doc.text(line, colPositions.cliente, y + 4 + (i * 3.5));
+                });
+                
+                // Rota (multilinha se necessário)
+                rota.forEach((line, i) => {
+                    doc.text(line, colPositions.rota, y + 4 + (i * 3.5));
+                });
+                
+                // Valor (alinhado à direita)
+                doc.text(viagem.valor.toFixed(2).replace('.', ','), colPositions.valor, y + 4, { align: 'right' });
+                
+                // Observações (multilinha se necessário)
+                obs.forEach((line, i) => {
+                    doc.text(line, colPositions.obs, y + 4 + (i * 3.5));
+                });
+                
+                // Ajustar altura da linha baseada no conteúdo
+                y += 5 + ((lineCount - 1) * 3.5);
             });
             
-            // Adicionar conteúdo para cada veículo
-            for (const veiculo in veiculos) {
-                // Adicionar página se necessário
-                if (y > 250) {
-                    doc.addPage();
-                    y = 20;
-                }
-                
-                // Título do veículo
-                doc.setFontSize(14);
-                doc.setTextColor(40, 53, 147); // Cor primária
-                doc.text(`Veículo: ${veiculo}`, 14, y);
-                y += 10;
-                
-                // Seção de IDA
-                if (veiculos[veiculo].ida.length > 0) {
-                    doc.setFontSize(12);
-                    doc.setTextColor(67, 97, 238); // Azul mais claro
-                    doc.text('Viagens de Ida:', 14, y);
-                    y += 7;
-                    
-                    // Cabeçalho da tabela
-                    doc.setFontSize(10);
-                    doc.setTextColor(0, 0, 0); // Preto
-                    doc.setFillColor(67, 97, 238); // Cor primária
-                    doc.setTextColor(255, 255, 255); // Branco
-                    doc.rect(14, y, 182, 7, 'F');
-                    doc.text('Data', 16, y + 5);
-                    doc.text('Motorista', 40, y + 5);
-                    doc.text('Colaborador', 80, y + 5);
-                    doc.text('Origem → Destino', 120, y + 5);
-                    doc.text('Valor (R$)', 170, y + 5);
-                    y += 7;
-                    
-                    // Conteúdo da tabela
-                    doc.setFontSize(9);
-                    doc.setTextColor(0, 0, 0); // Preto
-                    
-                    veiculos[veiculo].ida.forEach(viagem => {
-                        if (y > 280) {
-                            doc.addPage();
-                            y = 20;
-                        }
-                        
-                        doc.text(formatarData(viagem.data), 16, y + 5);
-                        doc.text(viagem.motorista, 40, y + 5);
-                        doc.text(viagem.colaborador, 80, y + 5);
-                        doc.text(`${viagem.origem} → ${viagem.destino}`, 120, y + 5);
-                        doc.text(viagem.valor.toFixed(2).replace('.', ','), 170, y + 5);
-                        y += 7;
-                    });
-                    
-                    // Subtotal
-                    const subtotalIda = veiculos[veiculo].ida.reduce((sum, viagem) => sum + viagem.valor, 0);
-                    doc.setFontSize(10);
-                    doc.setTextColor(0, 0, 0); // Preto
-                    doc.text(`Subtotal Ida: R$ ${subtotalIda.toFixed(2).replace('.', ',')}`, 160, y + 5);
-                    y += 10;
-                }
-                
-                // Seção de VOLTA
-                if (veiculos[veiculo].volta.length > 0) {
-                    doc.setFontSize(12);
-                    doc.setTextColor(67, 97, 238); // Azul mais claro
-                    doc.text('Viagens de Volta:', 14, y);
-                    y += 7;
-                    
-                    // Cabeçalho da tabela
-                    doc.setFontSize(10);
-                    doc.setTextColor(0, 0, 0); // Preto
-                    doc.setFillColor(67, 97, 238); // Cor primária
-                    doc.setTextColor(255, 255, 255); // Branco
-                    doc.rect(14, y, 182, 7, 'F');
-                    doc.text('Data', 16, y + 5);
-                    doc.text('Motorista', 40, y + 5);
-                    doc.text('Colaborador', 80, y + 5);
-                    doc.text('Origem → Destino', 120, y + 5);
-                    doc.text('Valor (R$)', 170, y + 5);
-                    y += 7;
-                    
-                    // Conteúdo da tabela
-                    doc.setFontSize(9);
-                    doc.setTextColor(0, 0, 0); // Preto
-                    
-                    veiculos[veiculo].volta.forEach(viagem => {
-                        if (y > 280) {
-                            doc.addPage();
-                            y = 20;
-                        }
-                        
-                        doc.text(formatarData(viagem.data), 16, y + 5);
-                        doc.text(viagem.motorista, 40, y + 5);
-                        doc.text(viagem.colaborador, 80, y + 5);
-                        doc.text(`${viagem.origem} → ${viagem.destino}`, 120, y + 5);
-                        doc.text(viagem.valor.toFixed(2).replace('.', ','), 170, y + 5);
-                        y += 7;
-                    });
-                    
-                    // Subtotal
-                    const subtotalVolta = veiculos[veiculo].volta.reduce((sum, viagem) => sum + viagem.valor, 0);
-                    doc.setFontSize(10);
-                    doc.setTextColor(0, 0, 0); // Preto
-                    doc.text(`Subtotal Volta: R$ ${subtotalVolta.toFixed(2).replace('.', ',')}`, 160, y + 5);
-                    y += 15;
-                }
-            }
-            
-            // Calcular total geral
-            const totalGeral = viagensFiltradas.reduce((sum, viagem) => sum + viagem.valor, 0);
-            
-            // Adicionar total geral
-            doc.setFontSize(12);
-            doc.setTextColor(0, 0, 0); // Preto
-            doc.text(`Total Geral: R$ ${totalGeral.toFixed(2).replace('.', ',')}`, 160, y + 5);
-            
-            // Salvar o PDF
-            doc.save(`Relatorio_Viagens_${new Date().toISOString().slice(0, 10)}.pdf`);
+            // Subtotal
+            const subtotalIda = veiculos[veiculo].ida.reduce((sum, viagem) => sum + viagem.valor, 0);
+            doc.setFontSize(styles.total.fontSize);
+            doc.setFont(undefined, styles.total.fontStyle);
+            doc.text(`Subtotal Ida: R$ ${subtotalIda.toFixed(2).replace('.', ',')}`, 
+                     marginLeft + pageWidth - 20, y + 4, { align: 'right' });
+            y += 10;
         }
+        
+        // Seção de VOLTA
+        if (veiculos[veiculo].volta.length > 0) {
+            checkPageBreak(20);
+            
+            doc.setFontSize(styles.subtitle.fontSize - 1);
+            doc.setTextColor(...styles.subtitle.textColor);
+            doc.text('Viagens de Volta:', marginLeft, y);
+            y += 6;
+            
+            // Cabeçalho da tabela (mesmo layout da ida)
+            doc.setFontSize(styles.header.fontSize);
+            doc.setTextColor(...styles.header.textColor);
+            doc.setFillColor(...styles.header.fillColor);
+            doc.rect(marginLeft, y, pageWidth, 6, 'F');
+            
+            // Texto do cabeçalho
+            doc.text('Data', colPositions.data, y + 4);
+            doc.text('Motorista', colPositions.motorista, y + 4);
+            doc.text('Colaborador', colPositions.colaborador, y + 4);
+            doc.text('Cliente', colPositions.cliente, y + 4);
+            doc.text('Origem → Destino', colPositions.rota, y + 4);
+            doc.text('Valor (R$)', colPositions.valor, y + 4);
+            doc.text('Obs', colPositions.obs, y + 4);
+            y += 6;
+            
+            // Conteúdo da tabela
+            doc.setFontSize(styles.body.fontSize);
+            doc.setTextColor(...styles.body.textColor);
+            doc.setFont(undefined, 'normal');
+            
+            veiculos[veiculo].volta.forEach(viagem => {
+                checkPageBreak(6); // Verificar se precisa de nova página
+                
+                // Formatar texto longo para caber na célula
+                const motorista = doc.splitTextToSize(viagem.motorista, columnWidths.motorista - 2);
+                const colaborador = doc.splitTextToSize(viagem.colaborador, columnWidths.colaborador - 2);
+                const cliente = doc.splitTextToSize(viagem.cliente, columnWidths.cliente - 2);
+                const rota = doc.splitTextToSize(`${viagem.origem} → ${viagem.destino}`, columnWidths.rota - 2);
+                const obs = viagem.observacoes ? doc.splitTextToSize(viagem.observacoes, columnWidths.obs - 2) : [''];
+                
+                // Altura da linha baseada no maior conjunto de linhas divididas
+                const lineCount = Math.max(
+                    motorista.length, 
+                    colaborador.length, 
+                    cliente.length, 
+                    rota.length,
+                    obs.length
+                );
+                
+                // Desenhar conteúdo
+                doc.text(formatarData(viagem.data), colPositions.data, y + 4);
+                
+                // Motorista (multilinha se necessário)
+                motorista.forEach((line, i) => {
+                    doc.text(line, colPositions.motorista, y + 4 + (i * 3.5));
+                });
+                
+                // Colaborador (multilinha se necessário)
+                colaborador.forEach((line, i) => {
+                    doc.text(line, colPositions.colaborador, y + 4 + (i * 3.5));
+                });
+                
+                // Cliente (multilinha se necessário)
+                cliente.forEach((line, i) => {
+                    doc.text(line, colPositions.cliente, y + 4 + (i * 3.5));
+                });
+                
+                // Rota (multilinha se necessário)
+                rota.forEach((line, i) => {
+                    doc.text(line, colPositions.rota, y + 4 + (i * 3.5));
+                });
+                
+                // Valor (alinhado à direita)
+                doc.text(viagem.valor.toFixed(2).replace('.', ','), colPositions.valor, y + 4, { align: 'right' });
+                
+                // Observações (multilinha se necessário)
+                obs.forEach((line, i) => {
+                    doc.text(line, colPositions.obs, y + 4 + (i * 3.5));
+                });
+                
+                // Ajustar altura da linha baseada no conteúdo
+                y += 5 + ((lineCount - 1) * 3.5);
+            });
+            
+            // Subtotal
+            const subtotalVolta = veiculos[veiculo].volta.reduce((sum, viagem) => sum + viagem.valor, 0);
+            doc.setFontSize(styles.total.fontSize);
+            doc.setFont(undefined, styles.total.fontStyle);
+            doc.text(`Subtotal Volta: R$ ${subtotalVolta.toFixed(2).replace('.', ',')}`, 
+                     marginLeft + pageWidth - 20, y + 4, { align: 'right' });
+            y += 15;
+        }
+    }
+    
+    // Calcular total geral
+    const totalGeral = viagensFiltradas.reduce((sum, viagem) => sum + viagem.valor, 0);
+    
+    // Adicionar total geral em nova página se necessário
+    checkPageBreak(10);
+    
+    // Linha divisória
+    doc.setDrawColor(200, 200, 200);
+    doc.line(marginLeft, y, marginLeft + pageWidth, y);
+    y += 5;
+    
+    // Total geral
+    doc.setFontSize(styles.total.fontSize + 2);
+    doc.setFont(undefined, 'bold');
+    doc.text(`Total Geral: R$ ${totalGeral.toFixed(2).replace('.', ',')}`, 
+             marginLeft + pageWidth - 20, y + 5, { align: 'right' });
+    
+    // Salvar o PDF
+    doc.save(`Relatorio_Viagens_${new Date().toISOString().slice(0, 10)}.pdf`);
+}
 
         // Exportar para Excel
         function exportarParaExcel() {
