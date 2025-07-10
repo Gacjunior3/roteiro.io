@@ -575,7 +575,23 @@
     </div>
 
     <script>
-        // Configuração do Firebase com suas credenciais
+        // Verificação inicial das bibliotecas
+        if (typeof firebase === 'undefined') {
+            console.error('Firebase não carregado');
+            alert('Erro: Biblioteca Firebase não foi carregada. Verifique sua conexão com a internet.');
+        }
+
+        if (typeof jsPDF === 'undefined') {
+            console.error('jsPDF não carregado');
+            alert('Erro: Biblioteca jsPDF não foi carregada. Verifique sua conexão com a internet.');
+        }
+
+        if (typeof XLSX === 'undefined') {
+            console.error('XLSX não carregado');
+            alert('Erro: Biblioteca XLSX não foi carregada. Verifique sua conexão com a internet.');
+        }
+
+        // Configuração do Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyBQLbjaGe4sjHWpFNnLpIhfeLm_1Xceyoc",
             authDomain: "roteiros-64517.firebaseapp.com",
@@ -587,10 +603,8 @@
         };
 
         // Inicializar Firebase
-        firebase.initializeApp(firebaseConfig);
+        const app = firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
-
-        // Referência para o banco de dados
         const viagensRef = database.ref('viagens');
 
         // Armazenamento local para viagens
@@ -598,17 +612,50 @@
         let viagensFiltradas = [];
         let editando = false;
 
-        // Função para formatar valores no padrão brasileiro
+        // Função para formatar valores no padrão brasileiro (CORRIGIDA)
         function formatarValorBrasileiro(valor) {
-            return 'R$ ' + parseFloat(valor).toFixed(2)
-                .replace('.', ',')
-                .replace(/(\d)(?=(\d{3})+\,)/g, '$1.');
+            // Garante que é um número
+            const numero = typeof valor === 'number' ? valor : parseFloat(valor) || 0;
+            
+            // Formata como moeda brasileira
+            return numero.toLocaleString('pt-BR', {
+                style: 'currency',
+                currency: 'BRL',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
         }
 
         // Função para converter valor brasileiro para número (CORRIGIDA)
         function parseValorBrasileiro(valorStr) {
-            // Remove todos os pontos (separadores de milhar) e substitui vírgula (decimal) por ponto
-            return parseFloat(valorStr.replace(/\./g, '').replace(',', '.'));
+            if (!valorStr) return 0;
+            
+            // Remove todos os não dígitos exceto o último ponto ou vírgula
+            let valorLimpo = valorStr.replace(/[^\d,.-]/g, '');
+            
+            // Verifica se tem vírgula ou ponto como separador decimal
+            const temVirgulaDecimal = valorLimpo.includes(',') && 
+                (valorLimpo.indexOf(',') === valorLimpo.lastIndexOf(',')) &&
+                (valorLimpo.length - valorLimpo.lastIndexOf(',') === 3);
+            
+            const temPontoDecimal = valorLimpo.includes('.') && 
+                (valorLimpo.indexOf('.') === valorLimpo.lastIndexOf('.')) &&
+                (valorLimpo.length - valorLimpo.lastIndexOf('.') === 3);
+            
+            if (temVirgulaDecimal) {
+                // Vírgula é o separador decimal (formato brasileiro)
+                valorLimpo = valorLimpo.replace(/\./g, '').replace(',', '.');
+            } else if (temPontoDecimal) {
+                // Ponto é o separador decimal (formato internacional)
+                valorLimpo = valorLimpo.replace(/,/g, '');
+            } else {
+                // Nenhum separador decimal explícito, trata como inteiro
+                valorLimpo = valorLimpo.replace(/\D/g, '');
+            }
+            
+            // Converte para número
+            const valorNumerico = parseFloat(valorLimpo);
+            return isNaN(valorNumerico) ? 0 : valorNumerico;
         }
 
         // Carregar viagens do Firebase
@@ -732,7 +779,7 @@
                 cliente,
                 valor,
                 observacoes: observacoes || '',
-                timestamp: editando ? firebase.database.ServerValue.TIMESTAMP : firebase.database.ServerValue.TIMESTAMP
+                timestamp: firebase.database.ServerValue.TIMESTAMP
             };
             
             if (editando && id) {
@@ -1115,7 +1162,7 @@
                     viagem.valor,
                     viagem.observacoes || ''
                 ]);
-            ]);
+            });
             
             const totalGeral = viagensFiltradas.reduce((sum, viagem) => sum + viagem.valor, 0);
             dados.push([
@@ -1290,31 +1337,39 @@
         document.addEventListener('DOMContentLoaded', function() {
             carregarViagens();
             
-            // Configurar máscara para o campo de valor (CORRIGIDO)
             const valorInput = document.getElementById('valor');
             
             // Formatação durante a digitação
             valorInput.addEventListener('input', function(e) {
-                // Remove tudo que não é número, vírgula ou ponto
-                let value = this.value.replace(/[^\d,.]/g, '');
+                // Guarda a posição do cursor
+                const cursorPosition = this.selectionStart;
+                const originalLength = this.value.length;
                 
-                // Se houver mais de uma vírgula ou ponto, mantém apenas o último
-                const decimalSeparators = value.match(/[,.]/g);
-                if (decimalSeparators && decimalSeparators.length > 1) {
-                    const lastSeparator = value.lastIndexOf(decimalSeparators[decimalSeparators.length - 1]);
-                    value = value.substring(0, lastSeparator).replace(/[,.]/g, '') + 
-                            value.substring(lastSeparator);
-                }
+                // Remove todos os não dígitos
+                let value = this.value.replace(/[^\d]/g, '');
                 
-                this.value = value;
+                // Adiciona zeros à esquerda se necessário
+                if (value.length === 0) value = '000';
+                if (value.length === 1) value = '00' + value;
+                if (value.length === 2) value = '0' + value;
+                
+                // Formata como valor monetário
+                const reais = value.slice(0, -2) || '0';
+                const centavos = value.slice(-2);
+                const valorFormatado = `${reais.replace(/\B(?=(\d{3})+(?!\d))/g, '.')},${centavos}`;
+                
+                this.value = valorFormatado;
+                
+                // Ajusta a posição do cursor
+                const newLength = this.value.length;
+                const cursorOffset = newLength - originalLength;
+                this.setSelectionRange(cursorPosition + cursorOffset, cursorPosition + cursorOffset);
             });
             
             // Formatação ao sair do campo
             valorInput.addEventListener('blur', function(e) {
                 const value = parseValorBrasileiro(this.value);
-                if (!isNaN(value)) {
-                    this.value = formatarValorBrasileiro(value);
-                }
+                this.value = formatarValorBrasileiro(value);
             });
         });
     </script>
