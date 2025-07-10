@@ -605,9 +605,10 @@
                 .replace(/(\d)(?=(\d{3})+\,)/g, '$1.');
         }
 
-        // Função para converter valor brasileiro para número
+        // Função para converter valor brasileiro para número (CORRIGIDA)
         function parseValorBrasileiro(valorStr) {
-            return parseFloat(valorStr.replace(/\./g, '').replace(',', '.').replace(/[^\d,]/g, ''));
+            // Remove todos os pontos (separadores de milhar) e substitui vírgula (decimal) por ponto
+            return parseFloat(valorStr.replace(/\./g, '').replace(',', '.'));
         }
 
         // Carregar viagens do Firebase
@@ -1114,7 +1115,7 @@
                     viagem.valor,
                     viagem.observacoes || ''
                 ]);
-            });
+            ]);
             
             const totalGeral = viagensFiltradas.reduce((sum, viagem) => sum + viagem.valor, 0);
             dados.push([
@@ -1289,19 +1290,30 @@
         document.addEventListener('DOMContentLoaded', function() {
             carregarViagens();
             
-            // Configurar máscara para o campo de valor
-            document.getElementById('valor').addEventListener('blur', function(e) {
+            // Configurar máscara para o campo de valor (CORRIGIDO)
+            const valorInput = document.getElementById('valor');
+            
+            // Formatação durante a digitação
+            valorInput.addEventListener('input', function(e) {
+                // Remove tudo que não é número, vírgula ou ponto
+                let value = this.value.replace(/[^\d,.]/g, '');
+                
+                // Se houver mais de uma vírgula ou ponto, mantém apenas o último
+                const decimalSeparators = value.match(/[,.]/g);
+                if (decimalSeparators && decimalSeparators.length > 1) {
+                    const lastSeparator = value.lastIndexOf(decimalSeparators[decimalSeparators.length - 1]);
+                    value = value.substring(0, lastSeparator).replace(/[,.]/g, '') + 
+                            value.substring(lastSeparator);
+                }
+                
+                this.value = value;
+            });
+            
+            // Formatação ao sair do campo
+            valorInput.addEventListener('blur', function(e) {
                 const value = parseValorBrasileiro(this.value);
                 if (!isNaN(value)) {
                     this.value = formatarValorBrasileiro(value);
-                }
-            });
-            
-            // Permitir apenas números, vírgula e ponto durante a digitação
-            document.getElementById('valor').addEventListener('keypress', function(e) {
-                const char = String.fromCharCode(e.keyCode || e.which);
-                if (!/[\d,.]/.test(char)) {
-                    e.preventDefault();
                 }
             });
         });
