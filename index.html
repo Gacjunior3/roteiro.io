@@ -873,7 +873,7 @@
         }
 
         // Exportar para PDF - Versão melhorada
-    function exportarParaPDF() {
+function exportarParaPDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF({
         orientation: 'landscape',
@@ -894,6 +894,13 @@
         total: { size: 11, style: 'bold', color: [0, 0, 0] }
     };
 
+    // Função para formatar valores no padrão brasileiro
+    function formatarValorBrasileiro(valor) {
+        return 'R$ ' + valor.toFixed(2)
+            .replace('.', ',')
+            .replace(/(\d)(?=(\d{3})+\,)/g, '$1.');
+    }
+
     // Posições das colunas (em mm a partir da margem esquerda)
     const columns = [
         { name: "Data", x: margin + 2, width: 15, align: "left" },
@@ -902,8 +909,8 @@
         { name: "Cliente", x: margin + 76, width: 30, align: "left" },
         { name: "Origem", x: margin + 109, width: 30, align: "left" },
         { name: "Destino", x: margin + 142, width: 30, align: "left" },
-        { name: "Valor (R$)", x: margin + 175, width: 20, align: "right" }, // Ajuste na posição do valor
-        { name: "Observações", x: margin + 198, width: 40, align: "left" }
+        { name: "Valor", x: margin + 175, width: 25, align: "right" }, // Aumentei a largura para caber "R$"
+        { name: "Observações", x: margin + 203, width: 35, align: "left" }
     ];
 
     // Função para adicionar cabeçalho da tabela
@@ -931,12 +938,12 @@
         doc.setFont(undefined, styles.body.style);
 
         // Quebra textos longos em múltiplas linhas
-        const motoristaLines = doc.splitTextToSize(viagem.motorista, 25);
-        const colaboradorLines = doc.splitTextToSize(viagem.colaborador, 25);
-        const clienteLines = doc.splitTextToSize(viagem.cliente, 30);
-        const origemLines = doc.splitTextToSize(viagem.origem, 30);
-        const destinoLines = doc.splitTextToSize(viagem.destino, 30);
-        const obsLines = viagem.observacoes ? doc.splitTextToSize(viagem.observacoes, 40) : [""];
+        const motoristaLines = doc.splitTextToSize(viagem.motorista, columns[1].width);
+        const colaboradorLines = doc.splitTextToSize(viagem.colaborador, columns[2].width);
+        const clienteLines = doc.splitTextToSize(viagem.cliente, columns[3].width);
+        const origemLines = doc.splitTextToSize(viagem.origem, columns[4].width);
+        const destinoLines = doc.splitTextToSize(viagem.destino, columns[5].width);
+        const obsLines = viagem.observacoes ? doc.splitTextToSize(viagem.observacoes, columns[7].width) : [""];
 
         // Calcula quantas linhas extras serão necessárias
         const lineCount = Math.max(
@@ -971,9 +978,9 @@
             doc.text(line, columns[5].x, yPos + 4 + (i * 4), { align: columns[5].align });
         });
         
-        // VALOR - Posicionamento corrigido
-        const valorX = columns[6].x + columns[6].width - 2; // Ajuste fino para alinhamento
-        doc.text(viagem.valor.toFixed(2).replace('.', ','), valorX, yPos + 4, { align: "right" });
+        // VALOR - Formatado no padrão brasileiro
+        const valorFormatado = formatarValorBrasileiro(viagem.valor);
+        doc.text(valorFormatado, columns[6].x + columns[6].width - 2, yPos + 4, { align: "right" });
         
         obsLines.forEach((line, i) => {
             doc.text(line, columns[7].x, yPos + 4 + (i * 4), { align: columns[7].align });
@@ -1050,7 +1057,7 @@
             const subtotal = veiculos[veiculo].ida.reduce((sum, v) => sum + v.valor, 0);
             doc.setFontSize(styles.total.size);
             doc.setFont(undefined, styles.total.style);
-            doc.text(`Subtotal Ida: R$ ${subtotal.toFixed(2).replace('.', ',')}`, 
+            doc.text(`Subtotal Ida: ${formatarValorBrasileiro(subtotal)}`, 
                     columns[6].x + columns[6].width - 2, y, { align: 'right' });
             y += 10;
         }
@@ -1083,7 +1090,7 @@
             const subtotal = veiculos[veiculo].volta.reduce((sum, v) => sum + v.valor, 0);
             doc.setFontSize(styles.total.size);
             doc.setFont(undefined, styles.total.style);
-            doc.text(`Subtotal Volta: R$ ${subtotal.toFixed(2).replace('.', ',')}`, 
+            doc.text(`Subtotal Volta: ${formatarValorBrasileiro(subtotal)}`, 
                     columns[6].x + columns[6].width - 2, y, { align: 'right' });
             y += 15;
         }
@@ -1092,7 +1099,7 @@
     // Total geral
     const totalGeral = viagensFiltradas.reduce((sum, v) => sum + v.valor, 0);
     doc.setFontSize(styles.total.size + 1);
-    doc.text(`Total Geral: R$ ${totalGeral.toFixed(2).replace('.', ',')}`, 
+    doc.text(`Total Geral: ${formatarValorBrasileiro(totalGeral)}`, 
             columns[6].x + columns[6].width - 2, y, { align: 'right' });
 
     // Salvar o PDF
