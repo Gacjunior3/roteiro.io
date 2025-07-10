@@ -613,40 +613,38 @@
             return parseFloat(valorStr.replace(/\./g, '').replace(',', '.'));
         }
 
-        // Configurar máscara para o campo de valor (CORREÇÃO: Não inicia com "0,00")
-        document.addEventListener('DOMContentLoaded', function() {
-            const valorInput = document.getElementById('valor');
-            
-            // Inicia vazio
-            valorInput.value = '';
-            
-            // Formatação durante a digitação
-            valorInput.addEventListener('input', function(e) {
-                // Remove tudo que não é número
-                let value = this.value.replace(/\D/g, '');
-                
-                // Se estiver vazio, mantém vazio
-                if (value === '') {
-                    this.value = '';
-                    return;
-                }
-                
-                // Formata como valor monetário
-                const centavos = value.slice(-2).padStart(2, '0');
-                const reais = value.slice(0, -2) || '0';
-                this.value = `${reais.replace(/\B(?=(\d{3})+(?!\d))/g, '.')},${centavos}`;
-            });
-            
-            // Formatação ao sair do campo
-            valorInput.addEventListener('blur', function(e) {
-                if (this.value.trim() === '') {
-                    this.value = '';
-                } else {
-                    const valorNumerico = parseValorBrasileiro(this.value);
-                    this.value = formatarValorBrasileiro(valorNumerico);
-                }
-            });
-        });
+      // Configuração do campo de valor (SEM zeros temporários)
+document.addEventListener('DOMContentLoaded', function() {
+    const valorInput = document.getElementById('valor');
+    
+    // Inicia vazio
+    valorInput.value = '';
+    
+    // Permite apenas números e vírgula durante a digitação
+    valorInput.addEventListener('input', function(e) {
+        // Remove tudo que não é número ou vírgula
+        this.value = this.value.replace(/[^\d,]/g, '');
+        
+        // Remove vírgulas extras (mantém só a última)
+        const partes = this.value.split(',');
+        if (partes.length > 2) {
+            this.value = partes[0] + ',' + partes.slice(1).join('');
+        }
+    });
+    
+    // Formata apenas ao sair do campo (blur)
+    valorInput.addEventListener('blur', function(e) {
+        if (this.value.trim() === '') {
+            this.value = '';
+        } else {
+            // Garante o formato "X.XXX,XX"
+            let value = this.value.replace(/\D/g, '');
+            const centavos = value.slice(-2).padStart(2, '0');
+            const reais = value.slice(0, -2) || '0';
+            this.value = `${reais.replace(/\B(?=(\d{3})+(?!\d))/g, '.')},${centavos}`;
+        }
+    });
+});
 
         // (O restante do JavaScript permanece igual)
         function carregarViagens() {
