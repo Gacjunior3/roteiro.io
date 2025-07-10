@@ -876,7 +876,7 @@
     function exportarParaPDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF({
-        orientation: 'landscape', // Alterado para paisagem para mais espaço
+        orientation: 'landscape',
         unit: 'mm',
         format: 'a4'
     });
@@ -894,6 +894,18 @@
         total: { size: 11, style: 'bold', color: [0, 0, 0] }
     };
 
+    // Posições das colunas (em mm a partir da margem esquerda)
+    const columns = [
+        { name: "Data", x: margin + 2, width: 15, align: "left" },
+        { name: "Motorista", x: margin + 20, width: 25, align: "left" },
+        { name: "Colaborador", x: margin + 48, width: 25, align: "left" },
+        { name: "Cliente", x: margin + 76, width: 30, align: "left" },
+        { name: "Origem", x: margin + 109, width: 30, align: "left" },
+        { name: "Destino", x: margin + 142, width: 30, align: "left" },
+        { name: "Valor (R$)", x: margin + 175, width: 20, align: "right" }, // Ajuste na posição do valor
+        { name: "Observações", x: margin + 198, width: 40, align: "left" }
+    ];
+
     // Função para adicionar cabeçalho da tabela
     function addTableHeader(doc, yPos) {
         doc.setFontSize(styles.header.size);
@@ -904,21 +916,9 @@
         // Desenha retângulo do cabeçalho
         doc.rect(margin, yPos, pageWidth, 8, 'F');
         
-        // Posições das colunas (em mm a partir da margem esquerda)
-        const cols = [
-            { x: margin + 2, text: "Data", width: 15 },
-            { x: margin + 20, text: "Motorista", width: 25 },
-            { x: margin + 48, text: "Colaborador", width: 25 },
-            { x: margin + 76, text: "Cliente", width: 30 },
-            { x: margin + 109, text: "Origem", width: 30 },
-            { x: margin + 142, text: "Destino", width: 30 },
-            { x: margin + 175, text: "Valor (R$)", width: 20, align: "right" },
-            { x: margin + 198, text: "Observações", width: 40 }
-        ];
-
         // Adiciona textos do cabeçalho
-        cols.forEach(col => {
-            doc.text(col.text, col.x, yPos + 5, { align: col.align || 'left' });
+        columns.forEach(col => {
+            doc.text(col.name, col.x, yPos + 5, { align: col.align });
         });
 
         return yPos + 8;
@@ -949,32 +949,34 @@
         );
 
         // Desenha os valores
-        doc.text(formatarData(viagem.data), margin + 2, yPos + 4);
+        doc.text(formatarData(viagem.data), columns[0].x, yPos + 4, { align: columns[0].align });
         
         motoristaLines.forEach((line, i) => {
-            doc.text(line, margin + 20, yPos + 4 + (i * 4));
+            doc.text(line, columns[1].x, yPos + 4 + (i * 4), { align: columns[1].align });
         });
         
         colaboradorLines.forEach((line, i) => {
-            doc.text(line, margin + 48, yPos + 4 + (i * 4));
+            doc.text(line, columns[2].x, yPos + 4 + (i * 4), { align: columns[2].align });
         });
         
         clienteLines.forEach((line, i) => {
-            doc.text(line, margin + 76, yPos + 4 + (i * 4));
+            doc.text(line, columns[3].x, yPos + 4 + (i * 4), { align: columns[3].align });
         });
         
         origemLines.forEach((line, i) => {
-            doc.text(line, margin + 109, yPos + 4 + (i * 4));
+            doc.text(line, columns[4].x, yPos + 4 + (i * 4), { align: columns[4].align });
         });
         
         destinoLines.forEach((line, i) => {
-            doc.text(line, margin + 142, yPos + 4 + (i * 4));
+            doc.text(line, columns[5].x, yPos + 4 + (i * 4), { align: columns[5].align });
         });
         
-        doc.text(viagem.valor.toFixed(2).replace('.', ','), margin + 185, yPos + 4, { align: "right" });
+        // VALOR - Posicionamento corrigido
+        const valorX = columns[6].x + columns[6].width - 2; // Ajuste fino para alinhamento
+        doc.text(viagem.valor.toFixed(2).replace('.', ','), valorX, yPos + 4, { align: "right" });
         
         obsLines.forEach((line, i) => {
-            doc.text(line, margin + 198, yPos + 4 + (i * 4));
+            doc.text(line, columns[7].x, yPos + 4 + (i * 4), { align: columns[7].align });
         });
 
         // Linha divisória
@@ -1039,7 +1041,7 @@
                 if (y > 190) {
                     doc.addPage();
                     y = 15;
-                    y = addTableHeader(doc, y); // Adiciona cabeçalho novamente
+                    y = addTableHeader(doc, y);
                 }
                 y = addTableRow(doc, viagem, y);
             });
@@ -1049,7 +1051,7 @@
             doc.setFontSize(styles.total.size);
             doc.setFont(undefined, styles.total.style);
             doc.text(`Subtotal Ida: R$ ${subtotal.toFixed(2).replace('.', ',')}`, 
-                    margin + pageWidth - 10, y, { align: 'right' });
+                    columns[6].x + columns[6].width - 2, y, { align: 'right' });
             y += 10;
         }
 
@@ -1072,7 +1074,7 @@
                 if (y > 190) {
                     doc.addPage();
                     y = 15;
-                    y = addTableHeader(doc, y); // Adiciona cabeçalho novamente
+                    y = addTableHeader(doc, y);
                 }
                 y = addTableRow(doc, viagem, y);
             });
@@ -1082,7 +1084,7 @@
             doc.setFontSize(styles.total.size);
             doc.setFont(undefined, styles.total.style);
             doc.text(`Subtotal Volta: R$ ${subtotal.toFixed(2).replace('.', ',')}`, 
-                    margin + pageWidth - 10, y, { align: 'right' });
+                    columns[6].x + columns[6].width - 2, y, { align: 'right' });
             y += 15;
         }
     }
@@ -1091,7 +1093,7 @@
     const totalGeral = viagensFiltradas.reduce((sum, v) => sum + v.valor, 0);
     doc.setFontSize(styles.total.size + 1);
     doc.text(`Total Geral: R$ ${totalGeral.toFixed(2).replace('.', ',')}`, 
-            margin + pageWidth - 10, y, { align: 'right' });
+            columns[6].x + columns[6].width - 2, y, { align: 'right' });
 
     // Salvar o PDF
     doc.save(`Relatorio_Viagens_${new Date().toISOString().slice(0, 10)}.pdf`);
