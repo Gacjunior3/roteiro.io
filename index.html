@@ -11,7 +11,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <style>
-        /* (O CSS permanece o mesmo do projeto original) */
         :root {
             --primary: #4361ee;
             --primary-light: #4895ef;
@@ -408,24 +407,22 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="data"><i class="far fa-calendar-alt"></i> Data</label>
-                        <input type="date" id="data" required>
-                        <span id="data-error" class="error"></span>
+                        <input type="date" id="data">
                     </div>
                     <div class="form-group">
                         <label for="tipo"><i class="fas fa-exchange-alt"></i> Tipo</label>
-                        <select id="tipo" required>
+                        <select id="tipo">
                             <option value="">Selecione...</option>
                             <option value="ida">Ida</option>
                             <option value="volta">Volta</option>
                         </select>
-                        <span id="tipo-error" class="error"></span>
                     </div>
                 </div>
                 
                 <div class="form-row">
                     <div class="form-group">
                         <label for="veiculo"><i class="fas fa-truck"></i> Veículo</label>
-                        <select id="veiculo" required>
+                        <select id="veiculo">
                             <option value="">Selecione...</option>
                             <option value="VW15.180 - JQR7F07">VW15.180 - JQR7F07</option>
                             <option value="STRADA - SHD8H83">STRADA - SHD8H83</option>
@@ -433,25 +430,23 @@
                             <option value="HYUNDAI - SJY8F42">HYUNDAI - SJY8F42</option>
                             <option value="TRUCK - KIS3B61">TRUCK - KIS3B61</option>
                         </select>
-                        <span id="veiculo-error" class="error"></span>
                     </div>
                     <div class="form-group">
                         <label for="motorista"><i class="fas fa-user-tie"></i> Motorista</label>
-                        <select id="motorista" required>
+                        <select id="motorista">
                             <option value="">Selecione...</option>
                             <option value="Demerval">Demerval</option>
                             <option value="Caique">Caique</option>
                             <option value="Eudes">Eudes</option>
                             <option value="Marcos">Marcos</option>
                         </select>
-                        <span id="motorista-error" class="error"></span>
                     </div>
                 </div>
                 
                 <div class="form-row">
                     <div class="form-group">
                         <label for="colaborador"><i class="fas fa-users"></i> Colaborador</label>
-                        <select id="colaborador" required>
+                        <select id="colaborador">
                             <option value="">Selecione...</option>
                             <option value="JEISE">JEISE</option>
                             <option value="MARIANE">MARIANE</option>
@@ -461,33 +456,28 @@
                             <option value="Genivaldo">Genivaldo</option>
                             <option value="Ana">Ana</option>
                         </select>
-                        <span id="colaborador-error" class="error"></span>
                     </div>
                     <div class="form-group">
                         <label for="cliente"><i class="fas fa-building"></i> Cliente</label>
-                        <input type="text" id="cliente" required>
-                        <span id="cliente-error" class="error"></span>
+                        <input type="text" id="cliente">
                     </div>
                 </div>
                 
                 <div class="form-row">
                     <div class="form-group">
                         <label for="origem"><i class="fas fa-map-marker-alt"></i> Origem</label>
-                        <input type="text" id="origem" required>
-                        <span id="origem-error" class="error"></span>
+                        <input type="text" id="origem">
                     </div>
                     <div class="form-group">
                         <label for="destino"><i class="fas fa-map-marker"></i> Destino</label>
-                        <input type="text" id="destino" required>
-                        <span id="destino-error" class="error"></span>
+                        <input type="text" id="destino">
                     </div>
                 </div>
                 
                 <div class="form-row">
                     <div class="form-group">
                         <label for="valor"><i class="fas fa-money-bill-wave"></i> Valor do Frete</label>
-                        <input type="text" id="valor" required placeholder="Digite o valor">
-                        <span id="valor-error" class="error"></span>
+                        <input type="text" id="valor">
                     </div>
                     <div class="form-group">
                         <label for="observacoes"><i class="fas fa-sticky-note"></i> Observações</label>
@@ -549,6 +539,21 @@
                         </div>
                     </div>
                     <div class="form-row">
+                        <div class="form-group">
+                            <label for="filterColaborador"><i class="fas fa-users"></i> Colaborador</label>
+                            <select id="filterColaborador">
+                                <option value="">Todos</option>
+                                <option value="JEISE">JEISE</option>
+                                <option value="MARIANE">MARIANE</option>
+                                <option value="MONICA">MONICA</option>
+                                <option value="MARIVAL">MARIVAL</option>
+                                <option value="Marcia">Marcia</option>
+                                <option value="Genivaldo">Genivaldo</option>
+                                <option value="Ana">Ana</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
                         <button type="button" class="btn btn-primary" onclick="aplicarFiltros()">
                             <i class="fas fa-filter"></i> Aplicar Filtros
                         </button>
@@ -576,7 +581,7 @@
     </div>
 
     <script>
-        // Configuração do Firebase
+        // Configuração do Firebase com suas credenciais
         const firebaseConfig = {
             apiKey: "AIzaSyBQLbjaGe4sjHWpFNnLpIhfeLm_1Xceyoc",
             authDomain: "roteiros-64517.firebaseapp.com",
@@ -590,6 +595,8 @@
         // Inicializar Firebase
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
+
+        // Referência para o banco de dados
         const viagensRef = database.ref('viagens');
 
         // Armazenamento local para viagens
@@ -599,54 +606,19 @@
 
         // Função para formatar valores no padrão brasileiro
         function formatarValorBrasileiro(valor) {
-            return valor.toLocaleString('pt-BR', {
-                style: 'currency',
-                currency: 'BRL',
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            });
+            if (!valor) return 'R$ 0,00';
+            return 'R$ ' + parseFloat(valor).toFixed(2)
+                .replace('.', ',')
+                .replace(/(\d)(?=(\d{3})+\,)/g, '$1.');
         }
 
         // Função para converter valor brasileiro para número
         function parseValorBrasileiro(valorStr) {
             if (!valorStr) return 0;
-            return parseFloat(valorStr.replace(/\./g, '').replace(',', '.'));
+            return parseFloat(valorStr.replace(/\./g, '').replace(',', '.').replace(/[^\d,]/g, ''));
         }
 
-      // Configuração do campo de valor (SEM zeros temporários)
-document.addEventListener('DOMContentLoaded', function() {
-    const valorInput = document.getElementById('valor');
-    
-    // Inicia vazio
-    valorInput.value = '';
-    
-    // Permite apenas números e vírgula durante a digitação
-    valorInput.addEventListener('input', function(e) {
-        // Remove tudo que não é número ou vírgula
-        this.value = this.value.replace(/[^\d,]/g, '');
-        
-        // Remove vírgulas extras (mantém só a última)
-        const partes = this.value.split(',');
-        if (partes.length > 2) {
-            this.value = partes[0] + ',' + partes.slice(1).join('');
-        }
-    });
-    
-    // Formata apenas ao sair do campo (blur)
-    valorInput.addEventListener('blur', function(e) {
-        if (this.value.trim() === '') {
-            this.value = '';
-        } else {
-            // Garante o formato "X.XXX,XX"
-            let value = this.value.replace(/\D/g, '');
-            const centavos = value.slice(-2).padStart(2, '0');
-            const reais = value.slice(0, -2) || '0';
-            this.value = `${reais.replace(/\B(?=(\d{3})+(?!\d))/g, '.')},${centavos}`;
-        }
-    });
-});
-
-        // (O restante do JavaScript permanece igual)
+        // Carregar viagens do Firebase
         function carregarViagens() {
             viagensRef.on('value', (snapshot) => {
                 viagens = [];
@@ -655,6 +627,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     Object.keys(dados).forEach(key => {
                         viagens.push({ id: key, ...dados[key] });
                     });
+                    // Ordenar por data (mais recente primeiro)
                     viagens.sort((a, b) => new Date(b.data) - new Date(a.data));
                     viagensFiltradas = [...viagens];
                 }
@@ -664,6 +637,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
 
+        // Mostrar tab selecionada
         function showTab(tabName) {
             document.querySelectorAll('.tab').forEach(tab => {
                 tab.classList.remove('active');
@@ -678,79 +652,20 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
-        function limparErros() {
-            document.querySelectorAll('.error').forEach(el => {
-                el.textContent = '';
-            });
-        }
-
+        // Adicionar nova viagem ou atualizar existente
         function adicionarViagem() {
-            limparErros();
-            
             const id = document.getElementById('editId').value;
-            const data = document.getElementById('data').value;
-            const tipo = document.getElementById('tipo').value;
-            const veiculo = document.getElementById('veiculo').value;
-            const motorista = document.getElementById('motorista').value;
-            const colaborador = document.getElementById('colaborador').value;
-            const origem = document.getElementById('origem').value;
-            const destino = document.getElementById('destino').value;
-            const cliente = document.getElementById('cliente').value;
-            const valorInput = document.getElementById('valor').value;
+            const data = document.getElementById('data').value || '';
+            const tipo = document.getElementById('tipo').value || '';
+            const veiculo = document.getElementById('veiculo').value || '';
+            const motorista = document.getElementById('motorista').value || '';
+            const colaborador = document.getElementById('colaborador').value || '';
+            const origem = document.getElementById('origem').value || '';
+            const destino = document.getElementById('destino').value || '';
+            const cliente = document.getElementById('cliente').value || '';
+            const valorInput = document.getElementById('valor').value || '0';
             const valor = parseValorBrasileiro(valorInput);
-            const observacoes = document.getElementById('observacoes').value;
-            
-            // Validação dos campos
-            let isValid = true;
-            
-            if (!data) {
-                document.getElementById('data-error').textContent = 'Data é obrigatória';
-                isValid = false;
-            }
-            
-            if (!tipo) {
-                document.getElementById('tipo-error').textContent = 'Tipo é obrigatório';
-                isValid = false;
-            }
-            
-            if (!veiculo) {
-                document.getElementById('veiculo-error').textContent = 'Veículo é obrigatório';
-                isValid = false;
-            }
-            
-            if (!motorista) {
-                document.getElementById('motorista-error').textContent = 'Motorista é obrigatório';
-                isValid = false;
-            }
-            
-            if (!colaborador) {
-                document.getElementById('colaborador-error').textContent = 'Colaborador é obrigatório';
-                isValid = false;
-            }
-            
-            if (!origem) {
-                document.getElementById('origem-error').textContent = 'Origem é obrigatória';
-                isValid = false;
-            }
-            
-            if (!destino) {
-                document.getElementById('destino-error').textContent = 'Destino é obrigatório';
-                isValid = false;
-            }
-            
-            if (!cliente) {
-                document.getElementById('cliente-error').textContent = 'Cliente é obrigatório';
-                isValid = false;
-            }
-            
-            if (isNaN(valor) || valorInput === '' || valor <= 0) {
-                document.getElementById('valor-error').textContent = 'Valor inválido (deve ser maior que zero)';
-                isValid = false;
-            }
-            
-            if (!isValid) {
-                return;
-            }
+            const observacoes = document.getElementById('observacoes').value || '';
             
             const viagem = {
                 data,
@@ -762,11 +677,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 destino,
                 cliente,
                 valor,
-                observacoes: observacoes || '',
-                timestamp: firebase.database.ServerValue.TIMESTAMP
+                observacoes,
+                timestamp: editando ? firebase.database.ServerValue.TIMESTAMP : firebase.database.ServerValue.TIMESTAMP
             };
             
             if (editando && id) {
+                // Atualizar viagem existente
                 viagensRef.child(id).update(viagem)
                     .then(() => {
                         limparFormulario();
@@ -779,6 +695,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         alert('Erro ao atualizar viagem: ' + error.message);
                     });
             } else {
+                // Salvar nova viagem
                 viagensRef.push(viagem)
                     .then(() => {
                         limparFormulario();
@@ -792,35 +709,42 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
+        // Editar viagem
         function editarViagem(id) {
             const viagem = viagens.find(v => v.id === id);
             if (!viagem) return;
             
             document.getElementById('editId').value = id;
-            document.getElementById('data').value = viagem.data;
-            document.getElementById('tipo').value = viagem.tipo;
-            document.getElementById('veiculo').value = viagem.veiculo;
-            document.getElementById('motorista').value = viagem.motorista;
-            document.getElementById('colaborador').value = viagem.colaborador;
-            document.getElementById('origem').value = viagem.origem;
-            document.getElementById('destino').value = viagem.destino;
-            document.getElementById('cliente').value = viagem.cliente;
+            document.getElementById('data').value = viagem.data || '';
+            document.getElementById('tipo').value = viagem.tipo || '';
+            document.getElementById('veiculo').value = viagem.veiculo || '';
+            document.getElementById('motorista').value = viagem.motorista || '';
+            document.getElementById('colaborador').value = viagem.colaborador || '';
+            document.getElementById('origem').value = viagem.origem || '';
+            document.getElementById('destino').value = viagem.destino || '';
+            document.getElementById('cliente').value = viagem.cliente || '';
             document.getElementById('valor').value = formatarValorBrasileiro(viagem.valor);
             document.getElementById('observacoes').value = viagem.observacoes || '';
             
+            // Atualizar UI para modo edição
             editando = true;
             document.getElementById('submitBtn').innerHTML = '<i class="fas fa-save"></i> Atualizar Viagem';
             document.getElementById('cancelEditBtn').classList.remove('hidden');
             
+            // Mostrar tab de formulário
             showTab('form');
+            
+            // Rolar para o topo do formulário
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        // Cancelar edição
         function cancelarEdicao() {
             limparFormulario();
             editando = false;
         }
 
+        // Excluir viagem
         function excluirViagem(id) {
             if (confirm('Tem certeza que deseja excluir esta viagem?\nEsta ação não pode ser desfeita!')) {
                 viagensRef.child(id).remove()
@@ -834,45 +758,60 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
+        // Aplicar filtros
         function aplicarFiltros() {
             const dataInicio = document.getElementById('filterDataInicio').value;
             const dataFim = document.getElementById('filterDataFim').value;
             const veiculo = document.getElementById('filterVeiculo').value;
             const motorista = document.getElementById('filterMotorista').value;
+            const colaborador = document.getElementById('filterColaborador').value;
             
             viagensFiltradas = viagens.filter(viagem => {
+                // Filtro por data
                 if (dataInicio && new Date(viagem.data) < new Date(dataInicio)) {
                     return false;
                 }
                 if (dataFim && new Date(viagem.data) > new Date(dataFim)) {
                     return false;
                 }
+                
+                // Filtro por veículo
                 if (veiculo && viagem.veiculo !== veiculo) {
                     return false;
                 }
+                
+                // Filtro por motorista
                 if (motorista && viagem.motorista !== motorista) {
                     return false;
                 }
+                
+                // Filtro por colaborador
+                if (colaborador && viagem.colaborador !== colaborador) {
+                    return false;
+                }
+                
                 return true;
             });
             
             gerarRoteiro();
         }
 
+        // Limpar filtros
         function limparFiltros() {
             document.getElementById('filterDataInicio').value = '';
             document.getElementById('filterDataFim').value = '';
             document.getElementById('filterVeiculo').value = '';
             document.getElementById('filterMotorista').value = '';
+            document.getElementById('filterColaborador').value = '';
             
             viagensFiltradas = [...viagens];
             gerarRoteiro();
         }
 
+        // Limpar formulário
         function limparFormulario() {
             document.getElementById('viagemForm').reset();
             document.getElementById('editId').value = '';
-            limparErros();
             
             if (editando) {
                 document.getElementById('submitBtn').innerHTML = '<i class="fas fa-save"></i> Salvar Viagem';
@@ -881,6 +820,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
+        // Limpar todas as viagens
         function limparTodasViagens() {
             if (confirm('Tem certeza que deseja apagar TODAS as viagens cadastradas?\nEsta ação não pode ser desfeita!')) {
                 viagensRef.remove()
@@ -897,6 +837,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
+        // Exportar para PDF
         function exportarParaPDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF({
@@ -905,10 +846,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 format: 'a4'
             });
 
+            // Configurações
             const margin = 10;
             const pageWidth = doc.internal.pageSize.getWidth() - margin * 2;
             let y = 15;
 
+            // Estilos
             const styles = {
                 title: { size: 16, style: 'bold', color: [40, 53, 147] },
                 header: { size: 10, style: 'bold', color: [255, 255, 255], fill: [67, 97, 238] },
@@ -916,6 +859,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 total: { size: 11, style: 'bold', color: [0, 0, 0] }
             };
 
+            // Posições das colunas (em mm a partir da margem esquerda)
             const columns = [
                 { name: "Data", x: margin + 2, width: 15, align: "left" },
                 { name: "Motorista", x: margin + 20, width: 25, align: "left" },
@@ -927,6 +871,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 { name: "Observações", x: margin + 203, width: 35, align: "left" }
             ];
 
+            // Função para adicionar cabeçalho da tabela
             function addTableHeader(doc, yPos) {
                 doc.setFontSize(styles.header.size);
                 doc.setTextColor(...styles.header.color);
@@ -942,17 +887,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 return yPos + 8;
             }
 
+            // Função para adicionar linha da tabela
             function addTableRow(doc, viagem, yPos) {
                 doc.setFontSize(styles.body.size);
                 doc.setTextColor(...styles.body.color);
                 doc.setFont(undefined, styles.body.style);
 
-                const motoristaLines = doc.splitTextToSize(viagem.motorista, columns[1].width);
-                const colaboradorLines = doc.splitTextToSize(viagem.colaborador, columns[2].width);
-                const clienteLines = doc.splitTextToSize(viagem.cliente, columns[3].width);
-                const origemLines = doc.splitTextToSize(viagem.origem, columns[4].width);
-                const destinoLines = doc.splitTextToSize(viagem.destino, columns[5].width);
-                const obsLines = viagem.observacoes ? doc.splitTextToSize(viagem.observacoes, columns[7].width) : [""];
+                const motoristaLines = doc.splitTextToSize(viagem.motorista || '-', columns[1].width);
+                const colaboradorLines = doc.splitTextToSize(viagem.colaborador || '-', columns[2].width);
+                const clienteLines = doc.splitTextToSize(viagem.cliente || '-', columns[3].width);
+                const origemLines = doc.splitTextToSize(viagem.origem || '-', columns[4].width);
+                const destinoLines = doc.splitTextToSize(viagem.destino || '-', columns[5].width);
+                const obsLines = viagem.observacoes ? doc.splitTextToSize(viagem.observacoes, columns[7].width) : ["-"];
 
                 const lineCount = Math.max(
                     motoristaLines.length,
@@ -963,7 +909,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     obsLines.length
                 );
 
-                doc.text(formatarData(viagem.data), columns[0].x, yPos + 4, { align: columns[0].align });
+                doc.text(formatarData(viagem.data) || '-', columns[0].x, yPos + 4, { align: columns[0].align });
                 
                 motoristaLines.forEach((line, i) => {
                     doc.text(line, columns[1].x, yPos + 4 + (i * 4), { align: columns[1].align });
@@ -998,17 +944,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 return yPos + 5 + ((lineCount - 1) * 4) + 5;
             }
 
+            // Título do documento
             doc.setFontSize(styles.title.size);
             doc.setTextColor(...styles.title.color);
             doc.setFont(undefined, styles.title.style);
             doc.text('Relatório de Viagens', margin + pageWidth / 2, y, { align: 'center' });
             y += 10;
 
+            // Data de emissão
             doc.setFontSize(10);
             doc.setTextColor(100, 100, 100);
             doc.text(`Emitido em: ${new Date().toLocaleDateString('pt-BR')}`, margin + pageWidth / 2, y, { align: 'center' });
             y += 10;
 
+            // Agrupar viagens por veículo
             const veiculos = {};
             viagensFiltradas.forEach(viagem => {
                 if (!veiculos[viagem.veiculo]) {
@@ -1017,6 +966,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 veiculos[viagem.veiculo][viagem.tipo].push(viagem);
             });
 
+            // Adicionar conteúdo para cada veículo
             for (const veiculo in veiculos) {
                 if (y > 180) {
                     doc.addPage();
@@ -1025,7 +975,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 doc.setFontSize(styles.title.size - 2);
                 doc.setTextColor(...styles.title.color);
-                doc.text(`Veículo: ${veiculo}`, margin, y);
+                doc.text(`Veículo: ${veiculo || 'Não informado'}`, margin, y);
                 y += 8;
 
                 if (veiculos[veiculo].ida.length > 0) {
@@ -1049,7 +999,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         y = addTableRow(doc, viagem, y);
                     });
 
-                    const subtotal = veiculos[veiculo].ida.reduce((sum, v) => sum + v.valor, 0);
+                    const subtotal = veiculos[veiculo].ida.reduce((sum, v) => sum + (v.valor || 0), 0);
                     doc.setFontSize(styles.total.size);
                     doc.setFont(undefined, styles.total.style);
                     doc.text(`Subtotal Ida: ${formatarValorBrasileiro(subtotal)}`, 
@@ -1078,7 +1028,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         y = addTableRow(doc, viagem, y);
                     });
 
-                    const subtotal = veiculos[veiculo].volta.reduce((sum, v) => sum + v.valor, 0);
+                    const subtotal = veiculos[veiculo].volta.reduce((sum, v) => sum + (v.valor || 0), 0);
                     doc.setFontSize(styles.total.size);
                     doc.setFont(undefined, styles.total.style);
                     doc.text(`Subtotal Volta: ${formatarValorBrasileiro(subtotal)}`, 
@@ -1087,7 +1037,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
 
-            const totalGeral = viagensFiltradas.reduce((sum, v) => sum + v.valor, 0);
+            const totalGeral = viagensFiltradas.reduce((sum, v) => sum + (v.valor || 0), 0);
             doc.setFontSize(styles.total.size + 1);
             doc.text(`Total Geral: ${formatarValorBrasileiro(totalGeral)}`, 
                     columns[6].x + columns[6].width - 2, y, { align: 'right' });
@@ -1095,6 +1045,7 @@ document.addEventListener('DOMContentLoaded', function() {
             doc.save(`Relatorio_Viagens_${new Date().toISOString().slice(0, 10)}.pdf`);
         }
 
+        // Exportar para Excel
         function exportarParaExcel() {
             const dados = [];
             
@@ -1105,20 +1056,20 @@ document.addEventListener('DOMContentLoaded', function() {
             
             viagensFiltradas.forEach(viagem => {
                 dados.push([
-                    formatarData(viagem.data),
-                    viagem.tipo === 'ida' ? 'Ida' : 'Volta',
-                    viagem.veiculo,
-                    viagem.motorista,
-                    viagem.colaborador,
-                    viagem.origem,
-                    viagem.destino,
-                    viagem.cliente,
-                    viagem.valor,
-                    viagem.observacoes || ''
+                    formatarData(viagem.data) || '-',
+                    viagem.tipo === 'ida' ? 'Ida' : (viagem.tipo === 'volta' ? 'Volta' : '-'),
+                    viagem.veiculo || '-',
+                    viagem.motorista || '-',
+                    viagem.colaborador || '-',
+                    viagem.origem || '-',
+                    viagem.destino || '-',
+                    viagem.cliente || '-',
+                    viagem.valor || 0,
+                    viagem.observacoes || '-'
                 ]);
             });
             
-            const totalGeral = viagensFiltradas.reduce((sum, viagem) => sum + viagem.valor, 0);
+            const totalGeral = viagensFiltradas.reduce((sum, viagem) => sum + (viagem.valor || 0), 0);
             dados.push([
                 '', '', '', '', '', '', '', 'Total Geral:', totalGeral, ''
             ]);
@@ -1130,11 +1081,14 @@ document.addEventListener('DOMContentLoaded', function() {
             XLSX.writeFile(wb, `Relatorio_Viagens_${new Date().toISOString().slice(0, 10)}.xlsx`);
         }
 
+        // Formatar data para exibição
         function formatarData(dataStr) {
+            if (!dataStr) return '';
             const [ano, mes, dia] = dataStr.split('-');
             return `${dia}/${mes}/${ano}`;
         }
 
+        // Gerar o roteiro completo
         function gerarRoteiro() {
             const container = document.getElementById('roteiroContainer');
             container.innerHTML = '';
@@ -1152,10 +1106,11 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const veiculos = {};
             viagensFiltradas.forEach(viagem => {
-                if (!veiculos[viagem.veiculo]) {
-                    veiculos[viagem.veiculo] = { ida: [], volta: [] };
+                const veiculo = viagem.veiculo || 'Não informado';
+                if (!veiculos[veiculo]) {
+                    veiculos[veiculo] = { ida: [], volta: [] };
                 }
-                veiculos[viagem.veiculo][viagem.tipo].push(viagem);
+                veiculos[veiculo][viagem.tipo || 'ida'].push(viagem);
             });
             
             let totalGeral = 0;
@@ -1178,7 +1133,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const idaTable = criarTabelaViagens(veiculos[veiculo].ida);
                     veiculoSection.appendChild(idaTable);
                     
-                    const subtotalIda = veiculos[veiculo].ida.reduce((sum, viagem) => sum + viagem.valor, 0);
+                    const subtotalIda = veiculos[veiculo].ida.reduce((sum, viagem) => sum + (viagem.valor || 0), 0);
                     totalGeral += subtotalIda;
                     
                     const subtotalElement = document.createElement('p');
@@ -1196,7 +1151,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const voltaTable = criarTabelaViagens(veiculos[veiculo].volta);
                     veiculoSection.appendChild(voltaTable);
                     
-                    const subtotalVolta = veiculos[veiculo].volta.reduce((sum, viagem) => sum + viagem.valor, 0);
+                    const subtotalVolta = veiculos[veiculo].volta.reduce((sum, viagem) => sum + (viagem.valor || 0), 0);
                     totalGeral += subtotalVolta;
                     
                     const subtotalElement = document.createElement('p');
@@ -1214,6 +1169,7 @@ document.addEventListener('DOMContentLoaded', function() {
             container.appendChild(totalElement);
         }
 
+        // Criar tabela de viagens
         function criarTabelaViagens(viagens) {
             const table = document.createElement('table');
             
@@ -1242,12 +1198,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 const row = document.createElement('tr');
                 
                 [
-                    formatarData(viagem.data), 
-                    viagem.motorista, 
-                    viagem.colaborador,
-                    viagem.origem, 
-                    viagem.destino, 
-                    viagem.cliente, 
+                    formatarData(viagem.data) || '-', 
+                    viagem.motorista || '-', 
+                    viagem.colaborador || '-',
+                    viagem.origem || '-', 
+                    viagem.destino || '-', 
+                    viagem.cliente || '-', 
                     formatarValorBrasileiro(viagem.valor),
                     viagem.observacoes || '-'
                 ].forEach(text => {
@@ -1284,8 +1240,26 @@ document.addEventListener('DOMContentLoaded', function() {
             return table;
         }
 
-        // Iniciar o carregamento das viagens
-        carregarViagens();
+        // Configurar máscara para o campo de valor
+        document.addEventListener('DOMContentLoaded', function() {
+            carregarViagens();
+            
+            // Configurar máscara para o campo de valor
+            document.getElementById('valor').addEventListener('blur', function(e) {
+                const value = parseValorBrasileiro(this.value);
+                if (!isNaN(value)) {
+                    this.value = formatarValorBrasileiro(value);
+                }
+            });
+            
+            // Permitir apenas números, vírgula e ponto durante a digitação
+            document.getElementById('valor').addEventListener('keypress', function(e) {
+                const char = String.fromCharCode(e.keyCode || e.which);
+                if (!/[\d,.]/.test(char)) {
+                    e.preventDefault();
+                }
+            });
+        });
     </script>
 </body>
 </html>
