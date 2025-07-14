@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -22,26 +23,22 @@
             --gray: #adb5bd;
             --white: #ffffff;
         }
-        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #f5f7fa;
             color: var(--dark);
             line-height: 1.6;
         }
-        
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
-        
         header {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
@@ -51,13 +48,11 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
-        
         h1 {
             font-size: 2rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
         }
-        
         .logo {
             display: flex;
             align-items: center;
@@ -65,11 +60,9 @@
             gap: 10px;
             margin-bottom: 1rem;
         }
-        
         .logo i {
             font-size: 2rem;
         }
-        
         .tabs {
             display: flex;
             background: white;
@@ -78,7 +71,6 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
             margin-bottom: 2rem;
         }
-        
         .tab {
             flex: 1;
             padding: 1rem;
@@ -87,17 +79,14 @@
             transition: all 0.3s ease;
             border-bottom: 3px solid transparent;
         }
-        
         .tab:hover {
             background-color: rgba(67, 97, 238, 0.1);
         }
-        
         .tab.active {
             border-bottom: 3px solid var(--primary);
             color: var(--primary);
             font-weight: 500;
         }
-        
         .card {
             background: white;
             border-radius: 10px;
@@ -105,7 +94,6 @@
             margin-bottom: 2rem;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         }
-        
         .card-title {
             font-size: 1.25rem;
             margin-bottom: 1.5rem;
@@ -114,30 +102,25 @@
             align-items: center;
             gap: 10px;
         }
-        
         .card-title i {
             font-size: 1.2rem;
         }
-        
         .form-row {
             display: flex;
             flex-wrap: wrap;
             gap: 1rem;
             margin-bottom: 1rem;
         }
-        
         .form-group {
             flex: 1;
             min-width: 200px;
         }
-        
         label {
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 500;
             color: var(--dark);
         }
-        
         input, select {
             width: 100%;
             padding: 0.75rem;
@@ -146,13 +129,11 @@
             font-family: 'Poppins', sans-serif;
             transition: border 0.3s;
         }
-        
         input:focus, select:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
         }
-        
         .btn {
             padding: 0.75rem 1.5rem;
             border: none;
@@ -165,74 +146,60 @@
             align-items: center;
             gap: 8px;
         }
-        
         .btn-primary {
             background-color: var(--primary);
             color: white;
         }
-        
         .btn-primary:hover {
             background-color: var(--secondary);
             transform: translateY(-2px);
         }
-        
         .btn-danger {
             background-color: var(--warning);
             color: white;
         }
-        
         .btn-danger:hover {
             background-color: #d91a6a;
             transform: translateY(-2px);
         }
-        
         .btn-secondary {
             background-color: var(--gray);
             color: white;
         }
-        
         .btn-secondary:hover {
             background-color: #8d99ae;
             transform: translateY(-2px);
         }
-        
         .btn-success {
             background-color: var(--success);
             color: white;
         }
-        
         .btn-success:hover {
             background-color: #3aa8d0;
             transform: translateY(-2px);
         }
-        
         .btn-warning {
             background-color: #ffc107;
             color: #212529;
         }
-        
         .btn-warning:hover {
             background-color: #e0a800;
             transform: translateY(-2px);
         }
-        
         .btn-info {
             background-color: #17a2b8;
             color: white;
         }
-        
         .btn-info:hover {
             background-color: #138496;
             transform: translateY(-2px);
         }
-        
         .error {
             color: var(--warning);
             font-size: 0.8rem;
             margin-top: 0.25rem;
             display: block;
         }
-        
         .veiculo-card {
             background: white;
             border-radius: 10px;
@@ -241,7 +208,6 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
             border-left: 4px solid var(--primary);
         }
-        
         .veiculo-title {
             font-size: 1.25rem;
             margin-bottom: 1rem;
@@ -250,7 +216,6 @@
             align-items: center;
             gap: 10px;
         }
-        
         .viagem-type {
             font-size: 1rem;
             margin: 1.5rem 0 1rem;
@@ -258,33 +223,27 @@
             border-bottom: 1px solid var(--gray);
             color: var(--primary);
         }
-        
         table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 1.5rem;
         }
-        
         th {
             background-color: var(--primary);
             color: white;
             padding: 0.75rem;
             text-align: left;
         }
-        
         td {
             padding: 0.75rem;
             border-bottom: 1px solid #eee;
         }
-        
         tr:nth-child(even) {
             background-color: #f8f9fa;
         }
-        
         tr:hover {
             background-color: #e9ecef;
         }
-        
         .total {
             font-weight: 600;
             text-align: right;
@@ -292,34 +251,28 @@
             margin-top: 1rem;
             color: var(--dark);
         }
-        
         .hidden {
             display: none;
         }
-        
         .empty-state {
             text-align: center;
             padding: 2rem;
             color: var(--gray);
         }
-        
         .empty-state i {
             font-size: 3rem;
             margin-bottom: 1rem;
             color: var(--gray);
         }
-        
         .action-buttons {
             display: flex;
             gap: 5px;
         }
-        
         .action-btn {
             padding: 0.35rem 0.5rem;
             font-size: 0.8rem;
             border-radius: 4px;
         }
-        
         .edit-form {
             display: none;
             margin-top: 1rem;
@@ -328,7 +281,6 @@
             border-radius: 6px;
             border: 1px solid #eee;
         }
-        
         .filter-section {
             background: white;
             border-radius: 10px;
@@ -336,7 +288,6 @@
             margin-bottom: 2rem;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         }
-        
         .filter-title {
             font-size: 1.25rem;
             margin-bottom: 1rem;
@@ -345,36 +296,29 @@
             align-items: center;
             gap: 10px;
         }
-        
         .export-buttons {
             display: flex;
             gap: 10px;
             margin-bottom: 20px;
             flex-wrap: wrap;
         }
-        
         @media (max-width: 768px) {
             .form-row {
                 flex-direction: column;
                 gap: 0;
             }
-            
             .form-group {
                 margin-bottom: 1rem;
             }
-            
             .tabs {
                 flex-direction: column;
             }
-            
             .action-buttons {
                 flex-direction: column;
             }
-            
             .action-btn {
                 width: 100%;
             }
-            
             .export-buttons {
                 flex-direction: column;
             }
@@ -390,7 +334,7 @@
             </div>
             <p>Controle completo das viagens da sua frota</p>
         </header>
-        
+
         <div class="tabs">
             <div class="tab active" onclick="showTab('form')">
                 <i class="fas fa-plus-circle"></i> Nova Viagem
@@ -399,7 +343,7 @@
                 <i class="fas fa-list-ul"></i> Visualizar Roteiros
             </div>
         </div>
-        
+
         <div id="form-section" class="card">
             <h2 class="card-title"><i class="fas fa-road"></i> Cadastrar Nova Viagem</h2>
             <form id="viagemForm">
@@ -408,6 +352,7 @@
                     <div class="form-group">
                         <label for="data"><i class="far fa-calendar-alt"></i> Data</label>
                         <input type="date" id="data">
+                        <span id="data-error" class="error"></span>
                     </div>
                     <div class="form-group">
                         <label for="tipo"><i class="fas fa-exchange-alt"></i> Tipo</label>
@@ -416,9 +361,10 @@
                             <option value="ida">Ida</option>
                             <option value="volta">Volta</option>
                         </select>
+                        <span id="tipo-error" class="error"></span>
                     </div>
                 </div>
-                
+
                 <div class="form-row">
                     <div class="form-group">
                         <label for="veiculo"><i class="fas fa-truck"></i> Veículo</label>
@@ -430,6 +376,7 @@
                             <option value="HYUNDAI - SJY8F42">HYUNDAI - SJY8F42</option>
                             <option value="TRUCK - KIS3B61">TRUCK - KIS3B61</option>
                         </select>
+                        <span id="veiculo-error" class="error"></span>
                     </div>
                     <div class="form-group">
                         <label for="motorista"><i class="fas fa-user-tie"></i> Motorista</label>
@@ -440,9 +387,10 @@
                             <option value="Eudes">Eudes</option>
                             <option value="Marcos">Marcos</option>
                         </select>
+                        <span id="motorista-error" class="error"></span>
                     </div>
                 </div>
-                
+
                 <div class="form-row">
                     <div class="form-group">
                         <label for="colaborador"><i class="fas fa-users"></i> Colaborador</label>
@@ -456,35 +404,40 @@
                             <option value="Genivaldo">Genivaldo</option>
                             <option value="Ana">Ana</option>
                         </select>
+                        <span id="colaborador-error" class="error"></span>
                     </div>
                     <div class="form-group">
                         <label for="cliente"><i class="fas fa-building"></i> Cliente</label>
                         <input type="text" id="cliente">
+                        <span id="cliente-error" class="error"></span>
                     </div>
                 </div>
-                
+
                 <div class="form-row">
                     <div class="form-group">
                         <label for="origem"><i class="fas fa-map-marker-alt"></i> Origem</label>
                         <input type="text" id="origem">
+                        <span id="origem-error" class="error"></span>
                     </div>
                     <div class="form-group">
                         <label for="destino"><i class="fas fa-map-marker"></i> Destino</label>
                         <input type="text" id="destino">
+                        <span id="destino-error" class="error"></span>
                     </div>
                 </div>
-                
+
                 <div class="form-row">
                     <div class="form-group">
                         <label for="valor"><i class="fas fa-money-bill-wave"></i> Valor do Frete</label>
-                        <input type="text" id="valor">
+                        <input type="text" id="valor" placeholder="Digite o valor">
+                        <span id="valor-error" class="error"></span>
                     </div>
                     <div class="form-group">
                         <label for="observacoes"><i class="fas fa-sticky-note"></i> Observações</label>
                         <input type="text" id="observacoes">
                     </div>
                 </div>
-                
+
                 <div class="form-row">
                     <button type="button" class="btn btn-primary" id="submitBtn" onclick="adicionarViagem()">
                         <i class="fas fa-save"></i> Salvar Viagem
@@ -498,11 +451,11 @@
                 </div>
             </form>
         </div>
-        
+
         <div id="results-section" class="hidden">
             <div class="card">
                 <h2 class="card-title"><i class="fas fa-route"></i> Roteiro de Viagens</h2>
-                
+
                 <div class="filter-section">
                     <h3 class="filter-title"><i class="fas fa-filter"></i> Filtros</h3>
                     <div class="form-row">
@@ -539,21 +492,6 @@
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group">
-                            <label for="filterColaborador"><i class="fas fa-users"></i> Colaborador</label>
-                            <select id="filterColaborador">
-                                <option value="">Todos</option>
-                                <option value="JEISE">JEISE</option>
-                                <option value="MARIANE">MARIANE</option>
-                                <option value="MONICA">MONICA</option>
-                                <option value="MARIVAL">MARIVAL</option>
-                                <option value="Marcia">Marcia</option>
-                                <option value="Genivaldo">Genivaldo</option>
-                                <option value="Ana">Ana</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-row">
                         <button type="button" class="btn btn-primary" onclick="aplicarFiltros()">
                             <i class="fas fa-filter"></i> Aplicar Filtros
                         </button>
@@ -562,7 +500,7 @@
                         </button>
                     </div>
                 </div>
-                
+
                 <div class="export-buttons">
                     <button type="button" class="btn btn-success" onclick="exportarParaPDF()">
                         <i class="fas fa-file-pdf"></i> Exportar para PDF
@@ -574,692 +512,440 @@
                         <i class="fas fa-trash-alt"></i> Limpar Todas as Viagens
                     </button>
                 </div>
-                
+
                 <div id="roteiroContainer"></div>
             </div>
         </div>
     </div>
-
-    <script>
-        // Configuração do Firebase com suas credenciais
-        const firebaseConfig = {
-            apiKey: "AIzaSyBQLbjaGe4sjHWpFNnLpIhfeLm_1Xceyoc",
-            authDomain: "roteiros-64517.firebaseapp.com",
-            databaseURL: "https://roteiros-64517-default-rtdb.firebaseio.com",
-            projectId: "roteiros-64517",
-            storageBucket: "roteiros-64517.appspot.com",
-            messagingSenderId: "154694664377",
-            appId: "1:154694664377:web:5be20dd286a29081e5db68"
-        };
-
-        // Inicializar Firebase
-        firebase.initializeApp(firebaseConfig);
-        const database = firebase.database();
-
-        // Referência para o banco de dados
-        const viagensRef = database.ref('viagens');
-
-        // Armazenamento local para viagens
-        let viagens = [];
-        let viagensFiltradas = [];
-        let editando = false;
-
-        // Função para formatar valores no padrão brasileiro
-        function formatarValorBrasileiro(valor) {
-            if (!valor) return 'R$ 0,00';
-            return 'R$ ' + parseFloat(valor).toFixed(2)
-                .replace('.', ',')
-                .replace(/(\d)(?=(\d{3})+\,)/g, '$1.');
+<script>
+    // Configuração do Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyBQLbjaGe4sjHWpFNnLpIhfeLm_1Xceyoc",
+        authDomain: "roteiros-64517.firebaseapp.com",
+        databaseURL: "https://roteiros-64517-default-rtdb.firebaseio.com",
+        projectId: "roteiros-64517",
+        storageBucket: "roteiros-64517.appspot.com",
+        messagingSenderId: "154694664377",
+        appId: "1:154694664377:web:5be20dd286a29081e5db68"
+    };
+    // Inicializar Firebase
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+    const viagensRef = database.ref('viagens');
+    // Armazenamento local para viagens
+    let viagens = [];
+    let viagensFiltradas = [];
+    let editando = false;
+    
+    // Função para formatar valores no padrão brasileiro
+    function formatarValorBrasileiro(valor) {
+        // Adiciona uma verificação para garantir que o valor é um número
+        if (typeof valor !== 'number' || isNaN(valor)) {
+            valor = 0;
         }
+        return valor.toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+    }
+    
+    // Função para converter valor brasileiro para número
+    function parseValorBrasileiro(valorStr) {
+        if (!valorStr) return 0;
+        const valorLimpo = valorStr.replace(/\./g, '').replace(',', '.');
+        const valorNumerico = parseFloat(valorLimpo);
+        return isNaN(valorNumerico) ? 0 : valorNumerico;
+    }
 
-        // Função para converter valor brasileiro para número
-        function parseValorBrasileiro(valorStr) {
-            if (!valorStr) return 0;
-            return parseFloat(valorStr.replace(/\./g, '').replace(',', '.').replace(/[^\d,]/g, ''));
-        }
-
-        // Carregar viagens do Firebase
-        function carregarViagens() {
-            viagensRef.on('value', (snapshot) => {
-                viagens = [];
-                const dados = snapshot.val();
-                if (dados) {
-                    Object.keys(dados).forEach(key => {
-                        viagens.push({ id: key, ...dados[key] });
-                    });
-                    // Ordenar por data (mais recente primeiro)
-                    viagens.sort((a, b) => new Date(b.data) - new Date(a.data));
-                    viagensFiltradas = [...viagens];
-                }
-                if (document.getElementById('results-section').classList.contains('hidden') === false) {
-                    gerarRoteiro();
-                }
-            });
-        }
-
-        // Mostrar tab selecionada
-        function showTab(tabName) {
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            document.querySelector(`.tab[onclick="showTab('${tabName}')"]`).classList.add('active');
-            
-            document.getElementById('form-section').classList.toggle('hidden', tabName !== 'form');
-            document.getElementById('results-section').classList.toggle('hidden', tabName !== 'results');
-            
-            if (tabName === 'results') {
-                gerarRoteiro();
-            }
-        }
-
-        // Adicionar nova viagem ou atualizar existente
-        function adicionarViagem() {
-            const id = document.getElementById('editId').value;
-            const data = document.getElementById('data').value || '';
-            const tipo = document.getElementById('tipo').value || '';
-            const veiculo = document.getElementById('veiculo').value || '';
-            const motorista = document.getElementById('motorista').value || '';
-            const colaborador = document.getElementById('colaborador').value || '';
-            const origem = document.getElementById('origem').value || '';
-            const destino = document.getElementById('destino').value || '';
-            const cliente = document.getElementById('cliente').value || '';
-            const valorInput = document.getElementById('valor').value || '0';
-            const valor = parseValorBrasileiro(valorInput);
-            const observacoes = document.getElementById('observacoes').value || '';
-            
-            const viagem = {
-                data,
-                tipo,
-                veiculo,
-                motorista,
-                colaborador,
-                origem,
-                destino,
-                cliente,
-                valor,
-                observacoes,
-                timestamp: editando ? firebase.database.ServerValue.TIMESTAMP : firebase.database.ServerValue.TIMESTAMP
-            };
-            
-            if (editando && id) {
-                // Atualizar viagem existente
-                viagensRef.child(id).update(viagem)
-                    .then(() => {
-                        limparFormulario();
-                        alert('Viagem atualizada com sucesso!');
-                        showTab('results');
-                        editando = false;
-                    })
-                    .catch(error => {
-                        console.error('Erro ao atualizar viagem:', error);
-                        alert('Erro ao atualizar viagem: ' + error.message);
-                    });
-            } else {
-                // Salvar nova viagem
-                viagensRef.push(viagem)
-                    .then(() => {
-                        limparFormulario();
-                        alert('Viagem cadastrada com sucesso!');
-                        showTab('results');
-                    })
-                    .catch(error => {
-                        console.error('Erro ao salvar viagem:', error);
-                        alert('Erro ao salvar viagem: ' + error.message);
-                    });
-            }
-        }
-
-        // Editar viagem
-        function editarViagem(id) {
-            const viagem = viagens.find(v => v.id === id);
-            if (!viagem) return;
-            
-            document.getElementById('editId').value = id;
-            document.getElementById('data').value = viagem.data || '';
-            document.getElementById('tipo').value = viagem.tipo || '';
-            document.getElementById('veiculo').value = viagem.veiculo || '';
-            document.getElementById('motorista').value = viagem.motorista || '';
-            document.getElementById('colaborador').value = viagem.colaborador || '';
-            document.getElementById('origem').value = viagem.origem || '';
-            document.getElementById('destino').value = viagem.destino || '';
-            document.getElementById('cliente').value = viagem.cliente || '';
-            document.getElementById('valor').value = formatarValorBrasileiro(viagem.valor);
-            document.getElementById('observacoes').value = viagem.observacoes || '';
-            
-            // Atualizar UI para modo edição
-            editando = true;
-            document.getElementById('submitBtn').innerHTML = '<i class="fas fa-save"></i> Atualizar Viagem';
-            document.getElementById('cancelEditBtn').classList.remove('hidden');
-            
-            // Mostrar tab de formulário
-            showTab('form');
-            
-            // Rolar para o topo do formulário
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // Cancelar edição
-        function cancelarEdicao() {
-            limparFormulario();
-            editando = false;
-        }
-
-        // Excluir viagem
-        function excluirViagem(id) {
-            if (confirm('Tem certeza que deseja excluir esta viagem?\nEsta ação não pode ser desfeita!')) {
-                viagensRef.child(id).remove()
-                    .then(() => {
-                        alert('Viagem excluída com sucesso!');
-                    })
-                    .catch(error => {
-                        console.error('Erro ao excluir viagem:', error);
-                        alert('Erro ao excluir viagem: ' + error.message);
-                    });
-            }
-        }
-
-        // Aplicar filtros
-        function aplicarFiltros() {
-            const dataInicio = document.getElementById('filterDataInicio').value;
-            const dataFim = document.getElementById('filterDataFim').value;
-            const veiculo = document.getElementById('filterVeiculo').value;
-            const motorista = document.getElementById('filterMotorista').value;
-            const colaborador = document.getElementById('filterColaborador').value;
-            
-            viagensFiltradas = viagens.filter(viagem => {
-                // Filtro por data
-                if (dataInicio && new Date(viagem.data) < new Date(dataInicio)) {
-                    return false;
-                }
-                if (dataFim && new Date(viagem.data) > new Date(dataFim)) {
-                    return false;
-                }
-                
-                // Filtro por veículo
-                if (veiculo && viagem.veiculo !== veiculo) {
-                    return false;
-                }
-                
-                // Filtro por motorista
-                if (motorista && viagem.motorista !== motorista) {
-                    return false;
-                }
-                
-                // Filtro por colaborador
-                if (colaborador && viagem.colaborador !== colaborador) {
-                    return false;
-                }
-                
-                return true;
-            });
-            
-            gerarRoteiro();
-        }
-
-        // Limpar filtros
-        function limparFiltros() {
-            document.getElementById('filterDataInicio').value = '';
-            document.getElementById('filterDataFim').value = '';
-            document.getElementById('filterVeiculo').value = '';
-            document.getElementById('filterMotorista').value = '';
-            document.getElementById('filterColaborador').value = '';
-            
-            viagensFiltradas = [...viagens];
-            gerarRoteiro();
-        }
-
-        // Limpar formulário
-        function limparFormulario() {
-            document.getElementById('viagemForm').reset();
-            document.getElementById('editId').value = '';
-            
-            if (editando) {
-                document.getElementById('submitBtn').innerHTML = '<i class="fas fa-save"></i> Salvar Viagem';
-                document.getElementById('cancelEditBtn').classList.add('hidden');
-                editando = false;
-            }
-        }
-
-        // Limpar todas as viagens
-        function limparTodasViagens() {
-            if (confirm('Tem certeza que deseja apagar TODAS as viagens cadastradas?\nEsta ação não pode ser desfeita!')) {
-                viagensRef.remove()
-                    .then(() => {
-                        viagens = [];
-                        viagensFiltradas = [];
-                        gerarRoteiro();
-                        alert('Todas as viagens foram removidas!');
-                    })
-                    .catch(error => {
-                        console.error('Erro ao remover viagens:', error);
-                        alert('Erro ao remover viagens: ' + error.message);
-                    });
-            }
-        }
-
-        // Exportar para PDF
-        function exportarParaPDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF({
-                orientation: 'landscape',
-                unit: 'mm',
-                format: 'a4'
-            });
-
-            // Configurações
-            const margin = 10;
-            const pageWidth = doc.internal.pageSize.getWidth() - margin * 2;
-            let y = 15;
-
-            // Estilos
-            const styles = {
-                title: { size: 16, style: 'bold', color: [40, 53, 147] },
-                header: { size: 10, style: 'bold', color: [255, 255, 255], fill: [67, 97, 238] },
-                body: { size: 9, style: 'normal', color: [0, 0, 0] },
-                total: { size: 11, style: 'bold', color: [0, 0, 0] }
-            };
-
-            // Posições das colunas (em mm a partir da margem esquerda)
-            const columns = [
-                { name: "Data", x: margin + 2, width: 15, align: "left" },
-                { name: "Motorista", x: margin + 20, width: 25, align: "left" },
-                { name: "Colaborador", x: margin + 48, width: 25, align: "left" },
-                { name: "Cliente", x: margin + 76, width: 30, align: "left" },
-                { name: "Origem", x: margin + 109, width: 30, align: "left" },
-                { name: "Destino", x: margin + 142, width: 30, align: "left" },
-                { name: "Valor", x: margin + 175, width: 25, align: "right" },
-                { name: "Observações", x: margin + 203, width: 35, align: "left" }
-            ];
-
-            // Função para adicionar cabeçalho da tabela
-            function addTableHeader(doc, yPos) {
-                doc.setFontSize(styles.header.size);
-                doc.setTextColor(...styles.header.color);
-                doc.setFont(undefined, styles.header.style);
-                doc.setFillColor(...styles.header.fill);
-                
-                doc.rect(margin, yPos, pageWidth, 8, 'F');
-                
-                columns.forEach(col => {
-                    doc.text(col.name, col.x, yPos + 5, { align: col.align });
-                });
-
-                return yPos + 8;
-            }
-
-            // Função para adicionar linha da tabela
-            function addTableRow(doc, viagem, yPos) {
-                doc.setFontSize(styles.body.size);
-                doc.setTextColor(...styles.body.color);
-                doc.setFont(undefined, styles.body.style);
-
-                const motoristaLines = doc.splitTextToSize(viagem.motorista || '-', columns[1].width);
-                const colaboradorLines = doc.splitTextToSize(viagem.colaborador || '-', columns[2].width);
-                const clienteLines = doc.splitTextToSize(viagem.cliente || '-', columns[3].width);
-                const origemLines = doc.splitTextToSize(viagem.origem || '-', columns[4].width);
-                const destinoLines = doc.splitTextToSize(viagem.destino || '-', columns[5].width);
-                const obsLines = viagem.observacoes ? doc.splitTextToSize(viagem.observacoes, columns[7].width) : ["-"];
-
-                const lineCount = Math.max(
-                    motoristaLines.length,
-                    colaboradorLines.length,
-                    clienteLines.length,
-                    origemLines.length,
-                    destinoLines.length,
-                    obsLines.length
-                );
-
-                doc.text(formatarData(viagem.data) || '-', columns[0].x, yPos + 4, { align: columns[0].align });
-                
-                motoristaLines.forEach((line, i) => {
-                    doc.text(line, columns[1].x, yPos + 4 + (i * 4), { align: columns[1].align });
-                });
-                
-                colaboradorLines.forEach((line, i) => {
-                    doc.text(line, columns[2].x, yPos + 4 + (i * 4), { align: columns[2].align });
-                });
-                
-                clienteLines.forEach((line, i) => {
-                    doc.text(line, columns[3].x, yPos + 4 + (i * 4), { align: columns[3].align });
-                });
-                
-                origemLines.forEach((line, i) => {
-                    doc.text(line, columns[4].x, yPos + 4 + (i * 4), { align: columns[4].align });
-                });
-                
-                destinoLines.forEach((line, i) => {
-                    doc.text(line, columns[5].x, yPos + 4 + (i * 4), { align: columns[5].align });
-                });
-                
-                const valorFormatado = formatarValorBrasileiro(viagem.valor);
-                doc.text(valorFormatado, columns[6].x + columns[6].width - 2, yPos + 4, { align: "right" });
-                
-                obsLines.forEach((line, i) => {
-                    doc.text(line, columns[7].x, yPos + 4 + (i * 4), { align: columns[7].align });
-                });
-
-                doc.setDrawColor(200, 200, 200);
-                doc.line(margin, yPos + 5 + ((lineCount - 1) * 4), margin + pageWidth, yPos + 5 + ((lineCount - 1) * 4));
-
-                return yPos + 5 + ((lineCount - 1) * 4) + 5;
-            }
-
-            // Título do documento
-            doc.setFontSize(styles.title.size);
-            doc.setTextColor(...styles.title.color);
-            doc.setFont(undefined, styles.title.style);
-            doc.text('Relatório de Viagens', margin + pageWidth / 2, y, { align: 'center' });
-            y += 10;
-
-            // Data de emissão
-            doc.setFontSize(10);
-            doc.setTextColor(100, 100, 100);
-            doc.text(`Emitido em: ${new Date().toLocaleDateString('pt-BR')}`, margin + pageWidth / 2, y, { align: 'center' });
-            y += 10;
-
-            // Agrupar viagens por veículo
-            const veiculos = {};
-            viagensFiltradas.forEach(viagem => {
-                if (!veiculos[viagem.veiculo]) {
-                    veiculos[viagem.veiculo] = { ida: [], volta: [] };
-                }
-                veiculos[viagem.veiculo][viagem.tipo].push(viagem);
-            });
-
-            // Adicionar conteúdo para cada veículo
-            for (const veiculo in veiculos) {
-                if (y > 180) {
-                    doc.addPage();
-                    y = 15;
-                }
-
-                doc.setFontSize(styles.title.size - 2);
-                doc.setTextColor(...styles.title.color);
-                doc.text(`Veículo: ${veiculo || 'Não informado'}`, margin, y);
-                y += 8;
-
-                if (veiculos[veiculo].ida.length > 0) {
-                    if (y > 170) {
-                        doc.addPage();
-                        y = 15;
-                    }
-
-                    doc.setFontSize(styles.body.size + 1);
-                    doc.text('Viagens de Ida:', margin, y);
-                    y += 6;
-
-                    y = addTableHeader(doc, y);
-
-                    veiculos[veiculo].ida.forEach(viagem => {
-                        if (y > 190) {
-                            doc.addPage();
-                            y = 15;
-                            y = addTableHeader(doc, y);
-                        }
-                        y = addTableRow(doc, viagem, y);
-                    });
-
-                    const subtotal = veiculos[veiculo].ida.reduce((sum, v) => sum + (v.valor || 0), 0);
-                    doc.setFontSize(styles.total.size);
-                    doc.setFont(undefined, styles.total.style);
-                    doc.text(`Subtotal Ida: ${formatarValorBrasileiro(subtotal)}`, 
-                            columns[6].x + columns[6].width - 2, y, { align: 'right' });
-                    y += 10;
-                }
-
-                if (veiculos[veiculo].volta.length > 0) {
-                    if (y > 170) {
-                        doc.addPage();
-                        y = 15;
-                    }
-
-                    doc.setFontSize(styles.body.size + 1);
-                    doc.text('Viagens de Volta:', margin, y);
-                    y += 6;
-
-                    y = addTableHeader(doc, y);
-
-                    veiculos[veiculo].volta.forEach(viagem => {
-                        if (y > 190) {
-                            doc.addPage();
-                            y = 15;
-                            y = addTableHeader(doc, y);
-                        }
-                        y = addTableRow(doc, viagem, y);
-                    });
-
-                    const subtotal = veiculos[veiculo].volta.reduce((sum, v) => sum + (v.valor || 0), 0);
-                    doc.setFontSize(styles.total.size);
-                    doc.setFont(undefined, styles.total.style);
-                    doc.text(`Subtotal Volta: ${formatarValorBrasileiro(subtotal)}`, 
-                            columns[6].x + columns[6].width - 2, y, { align: 'right' });
-                    y += 15;
-                }
-            }
-
-            const totalGeral = viagensFiltradas.reduce((sum, v) => sum + (v.valor || 0), 0);
-            doc.setFontSize(styles.total.size + 1);
-            doc.text(`Total Geral: ${formatarValorBrasileiro(totalGeral)}`, 
-                    columns[6].x + columns[6].width - 2, y, { align: 'right' });
-
-            doc.save(`Relatorio_Viagens_${new Date().toISOString().slice(0, 10)}.pdf`);
-        }
-
-        // Exportar para Excel
-        function exportarParaExcel() {
-            const dados = [];
-            
-            dados.push([
-                'Data', 'Tipo', 'Veículo', 'Motorista', 'Colaborador', 
-                'Origem', 'Destino', 'Cliente', 'Valor (R$)', 'Observações'
-            ]);
-            
-            viagensFiltradas.forEach(viagem => {
-                dados.push([
-                    formatarData(viagem.data) || '-',
-                    viagem.tipo === 'ida' ? 'Ida' : (viagem.tipo === 'volta' ? 'Volta' : '-'),
-                    viagem.veiculo || '-',
-                    viagem.motorista || '-',
-                    viagem.colaborador || '-',
-                    viagem.origem || '-',
-                    viagem.destino || '-',
-                    viagem.cliente || '-',
-                    viagem.valor || 0,
-                    viagem.observacoes || '-'
-                ]);
-            });
-            
-            const totalGeral = viagensFiltradas.reduce((sum, viagem) => sum + (viagem.valor || 0), 0);
-            dados.push([
-                '', '', '', '', '', '', '', 'Total Geral:', totalGeral, ''
-            ]);
-            
-            const wb = XLSX.utils.book_new();
-            const ws = XLSX.utils.aoa_to_sheet(dados);
-            
-            XLSX.utils.book_append_sheet(wb, ws, "Viagens");
-            XLSX.writeFile(wb, `Relatorio_Viagens_${new Date().toISOString().slice(0, 10)}.xlsx`);
-        }
-
-        // Formatar data para exibição
-        function formatarData(dataStr) {
-            if (!dataStr) return '';
-            const [ano, mes, dia] = dataStr.split('-');
-            return `${dia}/${mes}/${ano}`;
-        }
-
-        // Gerar o roteiro completo
-        function gerarRoteiro() {
-            const container = document.getElementById('roteiroContainer');
-            container.innerHTML = '';
-            
-            if (viagensFiltradas.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-road"></i>
-                        <h3>Nenhuma viagem encontrada</h3>
-                        <p>Nenhuma viagem corresponde aos filtros aplicados</p>
-                    </div>
-                `;
+    document.addEventListener('DOMContentLoaded', function() {
+        const valorInput = document.getElementById('valor');
+        valorInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (!value) {
+                e.target.value = '';
                 return;
             }
-            
-            const veiculos = {};
-            viagensFiltradas.forEach(viagem => {
-                const veiculo = viagem.veiculo || 'Não informado';
-                if (!veiculos[veiculo]) {
-                    veiculos[veiculo] = { ida: [], volta: [] };
-                }
-                veiculos[veiculo][viagem.tipo || 'ida'].push(viagem);
+            const valorFormatado = (parseFloat(value) / 100).toLocaleString('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
             });
-            
-            let totalGeral = 0;
-            
-            for (const veiculo in veiculos) {
-                const veiculoSection = document.createElement('div');
-                veiculoSection.className = 'veiculo-card';
-                
-                const titulo = document.createElement('h3');
-                titulo.className = 'veiculo-title';
-                titulo.innerHTML = `<i class="fas fa-truck"></i> ${veiculo}`;
-                veiculoSection.appendChild(titulo);
-                
-                if (veiculos[veiculo].ida.length > 0) {
-                    const idaTitle = document.createElement('h4');
-                    idaTitle.className = 'viagem-type';
-                    idaTitle.innerHTML = '<i class="fas fa-arrow-right"></i> Viagens de Ida';
-                    veiculoSection.appendChild(idaTitle);
-                    
-                    const idaTable = criarTabelaViagens(veiculos[veiculo].ida);
-                    veiculoSection.appendChild(idaTable);
-                    
-                    const subtotalIda = veiculos[veiculo].ida.reduce((sum, viagem) => sum + (viagem.valor || 0), 0);
-                    totalGeral += subtotalIda;
-                    
-                    const subtotalElement = document.createElement('p');
-                    subtotalElement.className = 'total';
-                    subtotalElement.textContent = `Subtotal Ida: ${formatarValorBrasileiro(subtotalIda)}`;
-                    veiculoSection.appendChild(subtotalElement);
-                }
-                
-                if (veiculos[veiculo].volta.length > 0) {
-                    const voltaTitle = document.createElement('h4');
-                    voltaTitle.className = 'viagem-type';
-                    voltaTitle.innerHTML = '<i class="fas fa-arrow-left"></i> Viagens de Volta';
-                    veiculoSection.appendChild(voltaTitle);
-                    
-                    const voltaTable = criarTabelaViagens(veiculos[veiculo].volta);
-                    veiculoSection.appendChild(voltaTable);
-                    
-                    const subtotalVolta = veiculos[veiculo].volta.reduce((sum, viagem) => sum + (viagem.valor || 0), 0);
-                    totalGeral += subtotalVolta;
-                    
-                    const subtotalElement = document.createElement('p');
-                    subtotalElement.className = 'total';
-                    subtotalElement.textContent = `Subtotal Volta: ${formatarValorBrasileiro(subtotalVolta)}`;
-                    veiculoSection.appendChild(subtotalElement);
-                }
-                
-                container.appendChild(veiculoSection);
-            }
-            
-            const totalElement = document.createElement('div');
-            totalElement.className = 'total';
-            totalElement.innerHTML = `<h3>Total Geral: ${formatarValorBrasileiro(totalGeral)}</h3>`;
-            container.appendChild(totalElement);
-        }
-
-        // Criar tabela de viagens
-        function criarTabelaViagens(viagens) {
-            const table = document.createElement('table');
-            
-            const thead = document.createElement('thead');
-            const headerRow = document.createElement('tr');
-            [
-                { text: 'Data', icon: 'calendar-alt' },
-                { text: 'Motorista', icon: 'user-tie' },
-                { text: 'Colaborador', icon: 'users' },
-                { text: 'Origem', icon: 'map-marker-alt' },
-                { text: 'Destino', icon: 'map-marker' },
-                { text: 'Cliente', icon: 'building' },
-                { text: 'Valor', icon: 'money-bill-wave' },
-                { text: 'Obs', icon: 'sticky-note' },
-                { text: 'Ações', icon: 'cog' }
-            ].forEach(col => {
-                const th = document.createElement('th');
-                th.innerHTML = `<i class="fas fa-${col.icon}"></i> ${col.text}`;
-                headerRow.appendChild(th);
-            });
-            thead.appendChild(headerRow);
-            table.appendChild(thead);
-            
-            const tbody = document.createElement('tbody');
-            viagens.forEach(viagem => {
-                const row = document.createElement('tr');
-                
-                [
-                    formatarData(viagem.data) || '-', 
-                    viagem.motorista || '-', 
-                    viagem.colaborador || '-',
-                    viagem.origem || '-', 
-                    viagem.destino || '-', 
-                    viagem.cliente || '-', 
-                    formatarValorBrasileiro(viagem.valor),
-                    viagem.observacoes || '-'
-                ].forEach(text => {
-                    const td = document.createElement('td');
-                    td.textContent = text;
-                    row.appendChild(td);
-                });
-                
-                const actionsTd = document.createElement('td');
-                const actionsDiv = document.createElement('div');
-                actionsDiv.className = 'action-buttons';
-                
-                const editBtn = document.createElement('button');
-                editBtn.className = 'btn btn-warning action-btn';
-                editBtn.innerHTML = '<i class="fas fa-edit"></i>';
-                editBtn.title = 'Editar';
-                editBtn.onclick = () => editarViagem(viagem.id);
-                
-                const deleteBtn = document.createElement('button');
-                deleteBtn.className = 'btn btn-danger action-btn';
-                deleteBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
-                deleteBtn.title = 'Excluir';
-                deleteBtn.onclick = () => excluirViagem(viagem.id);
-                
-                actionsDiv.appendChild(editBtn);
-                actionsDiv.appendChild(deleteBtn);
-                actionsTd.appendChild(actionsDiv);
-                row.appendChild(actionsTd);
-                
-                tbody.appendChild(row);
-            });
-            table.appendChild(tbody);
-            
-            return table;
-        }
-
-        // Configurar máscara para o campo de valor
-        document.addEventListener('DOMContentLoaded', function() {
-            carregarViagens();
-            
-            // Configurar máscara para o campo de valor
-            document.getElementById('valor').addEventListener('blur', function(e) {
-                const value = parseValorBrasileiro(this.value);
-                if (!isNaN(value)) {
-                    this.value = formatarValorBrasileiro(value);
-                }
-            });
-            
-            // Permitir apenas números, vírgula e ponto durante a digitação
-            document.getElementById('valor').addEventListener('keypress', function(e) {
-                const char = String.fromCharCode(e.keyCode || e.which);
-                if (!/[\d,.]/.test(char)) {
-                    e.preventDefault();
-                }
-            });
+            e.target.value = valorFormatado.replace('R$', '').trim();
         });
-    </script>
+    });
+    
+    function carregarViagens() {
+        viagensRef.on('value', (snapshot) => {
+            viagens = [];
+            const dados = snapshot.val();
+            if (dados) {
+                Object.keys(dados).forEach(key => {
+                    viagens.push({ id: key, ...dados[key] });
+                });
+                viagens.sort((a, b) => new Date(b.data) - new Date(a.data));
+                viagensFiltradas = [...viagens];
+            }
+            if (document.getElementById('results-section').classList.contains('hidden') === false) {
+                gerarRoteiro();
+            }
+        });
+    }
+
+    function showTab(tabName) {
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.classList.remove('active');
+        });
+        document.querySelector(`.tab[onclick="showTab('${tabName}')"]`).classList.add('active');
+        document.getElementById('form-section').classList.toggle('hidden', tabName !== 'form');
+        document.getElementById('results-section').classList.toggle('hidden', tabName !== 'results');
+        if (tabName === 'results') {
+            gerarRoteiro();
+        }
+    }
+
+    function limparErros() {
+        document.querySelectorAll('.error').forEach(el => {
+            el.textContent = '';
+        });
+    }
+
+    function adicionarViagem() {
+        limparErros();
+        const id = document.getElementById('editId').value;
+        const data = document.getElementById('data').value;
+        const tipo = document.getElementById('tipo').value;
+        const veiculo = document.getElementById('veiculo').value;
+        const motorista = document.getElementById('motorista').value;
+        const colaborador = document.getElementById('colaborador').value;
+        const origem = document.getElementById('origem').value;
+        const destino = document.getElementById('destino').value;
+        const cliente = document.getElementById('cliente').value;
+        const valorInput = document.getElementById('valor').value;
+        const valor = parseValorBrasileiro(valorInput);
+        const observacoes = document.getElementById('observacoes').value;
+        
+        /* --- INÍCIO DA ALTERAÇÃO: VALIDAÇÃO REMOVIDA ---
+        
+        // A validação de campos obrigatórios foi removida (comentada).
+        
+        let isValid = true;
+        if (!data) {
+            document.getElementById('data-error').textContent = 'Data é obrigatória';
+            isValid = false;
+        }
+        if (!tipo) {
+            document.getElementById('tipo-error').textContent = 'Tipo é obrigatório';
+            isValid = false;
+        }
+        if (!veiculo) {
+            document.getElementById('veiculo-error').textContent = 'Veículo é obrigatório';
+            isValid = false;
+        }
+        if (!motorista) {
+            document.getElementById('motorista-error').textContent = 'Motorista é obrigatório';
+            isValid = false;
+        }
+        if (!colaborador) {
+            document.getElementById('colaborador-error').textContent = 'Colaborador é obrigatório';
+            isValid = false;
+        }
+        if (!origem) {
+            document.getElementById('origem-error').textContent = 'Origem é obrigatória';
+            isValid = false;
+        }
+        if (!destino) {
+            document.getElementById('destino-error').textContent = 'Destino é obrigatório';
+            isValid = false;
+        }
+        if (!cliente) {
+            document.getElementById('cliente-error').textContent = 'Cliente é obrigatório';
+            isValid = false;
+        }
+        if (isNaN(valor) || valorInput === '' || valor <= 0) {
+            document.getElementById('valor-error').textContent = 'Valor inválido (deve ser maior que zero)';
+            isValid = false;
+        }
+        if (!isValid) {
+            return;
+        }
+        
+        */ // --- FIM DA ALTERAÇÃO ---
+
+        const viagem = {
+            data,
+            tipo,
+            veiculo,
+            motorista,
+            colaborador,
+            origem,
+            destino,
+            cliente,
+            valor,
+            observacoes: observacoes || '',
+            timestamp: firebase.database.ServerValue.TIMESTAMP
+        };
+        if (editando && id) {
+            viagensRef.child(id).update(viagem)
+                .then(() => {
+                    limparFormulario();
+                    alert('Viagem atualizada com sucesso!');
+                    showTab('results');
+                    editando = false;
+                })
+                .catch(error => {
+                    console.error('Erro ao atualizar viagem:', error);
+                    alert('Erro ao atualizar viagem: ' + error.message);
+                });
+        } else {
+            viagensRef.push(viagem)
+                .then(() => {
+                    limparFormulario();
+                    alert('Viagem cadastrada com sucesso!');
+                    showTab('results');
+                })
+                .catch(error => {
+                    console.error('Erro ao salvar viagem:', error);
+                    alert('Erro ao salvar viagem: ' + error.message);
+                });
+        }
+    }
+
+    function editarViagem(id) {
+        const viagem = viagens.find(v => v.id === id);
+        if (!viagem) return;
+        document.getElementById('editId').value = id;
+        document.getElementById('data').value = viagem.data;
+        document.getElementById('tipo').value = viagem.tipo;
+        document.getElementById('veiculo').value = viagem.veiculo;
+        document.getElementById('motorista').value = viagem.motorista;
+        document.getElementById('colaborador').value = viagem.colaborador;
+        document.getElementById('origem').value = viagem.origem;
+        document.getElementById('destino').value = viagem.destino;
+        document.getElementById('cliente').value = viagem.cliente;
+        const valorNumerico = (typeof viagem.valor === 'number') ? viagem.valor : 0;
+        const valorFormatado = (valorNumerico).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+        document.getElementById('valor').value = valorFormatado;
+        document.getElementById('observacoes').value = viagem.observacoes || '';
+        editando = true;
+        document.getElementById('submitBtn').innerHTML = '<i class="fas fa-save"></i> Atualizar Viagem';
+        document.getElementById('cancelEditBtn').classList.remove('hidden');
+        showTab('form');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function cancelarEdicao() {
+        limparFormulario();
+        editando = false;
+    }
+
+    function excluirViagem(id) {
+        if (confirm('Tem certeza que deseja excluir esta viagem?\nEsta ação não pode ser desfeita!')) {
+            viagensRef.child(id).remove()
+                .then(() => {
+                    alert('Viagem excluída com sucesso!');
+                })
+                .catch(error => {
+                    console.error('Erro ao excluir viagem:', error);
+                    alert('Erro ao excluir viagem: ' + error.message);
+                });
+        }
+    }
+
+    function aplicarFiltros() {
+        const dataInicio = document.getElementById('filterDataInicio').value;
+        const dataFim = document.getElementById('filterDataFim').value;
+        const veiculo = document.getElementById('filterVeiculo').value;
+        const motorista = document.getElementById('filterMotorista').value;
+        viagensFiltradas = viagens.filter(viagem => {
+            if (!viagem.data) return true; // Permite que viagens sem data apareçam
+            let dataViagem = new Date(viagem.data + 'T00:00:00');
+            if (dataInicio && dataViagem < new Date(dataInicio + 'T00:00:00')) {
+                return false;
+            }
+            if (dataFim && dataViagem > new Date(dataFim + 'T00:00:00')) {
+                return false;
+            }
+            if (veiculo && viagem.veiculo !== veiculo) {
+                return false;
+            }
+            if (motorista && viagem.motorista !== motorista) {
+                return false;
+            }
+            return true;
+        });
+        gerarRoteiro();
+    }
+
+    function limparFiltros() {
+        document.getElementById('filterDataInicio').value = '';
+        document.getElementById('filterDataFim').value = '';
+        document.getElementById('filterVeiculo').value = '';
+        document.getElementById('filterMotorista').value = '';
+        viagensFiltradas = [...viagens];
+        gerarRoteiro();
+    }
+
+    function limparFormulario() {
+        document.getElementById('viagemForm').reset();
+        document.getElementById('editId').value = '';
+        limparErros();
+        if (editando) {
+            document.getElementById('submitBtn').innerHTML = '<i class="fas fa-save"></i> Salvar Viagem';
+            document.getElementById('cancelEditBtn').classList.add('hidden');
+            editando = false;
+        }
+    }
+
+    function limparTodasViagens() {
+        if (confirm('Tem certeza que deseja apagar TODAS as viagens cadastradas?\nEsta ação não pode ser desfeita!')) {
+            viagensRef.remove()
+                .then(() => {
+                    viagens = [];
+                    viagensFiltradas = [];
+                    gerarRoteiro();
+                    alert('Todas as viagens foram removidas!');
+                }).catch(error => {
+                    console.error("Erro ao limpar viagens: ", error);
+                    alert("Ocorreu um erro ao limpar as viagens.");
+                });
+        }
+    }
+
+    function gerarRoteiro() {
+        const roteiroContainer = document.getElementById('roteiroContainer');
+        roteiroContainer.innerHTML = '';
+        if (viagensFiltradas.length === 0) {
+            roteiroContainer.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-box-open"></i>
+                    <p>Nenhuma viagem encontrada.</p>
+                    <p>Cadastre uma nova viagem ou ajuste seus filtros.</p>
+                </div>`;
+            return;
+        }
+        const viagensPorVeiculo = viagensFiltradas.reduce((acc, viagem) => {
+            const veiculoKey = viagem.veiculo || 'Veículo não especificado';
+            if (!acc[veiculoKey]) {
+                acc[veiculoKey] = [];
+            }
+            acc[veiculoKey].push(viagem);
+            return acc;
+        }, {});
+        for (const veiculo in viagensPorVeiculo) {
+            const veiculoCard = document.createElement('div');
+            veiculoCard.className = 'veiculo-card';
+            let totalFreteVeiculo = 0;
+            let tabelaIda = `
+                <h3 class="viagem-type">Viagens de Ida</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Data</th><th>Motorista</th><th>Colaborador</th><th>Cliente</th><th>Origem</th><th>Destino</th><th>Valor</th><th>Obs.</th><th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+            let tabelaVolta = `
+                <h3 class="viagem-type">Viagens de Volta</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Data</th><th>Motorista</th><th>Colaborador</th><th>Cliente</th><th>Origem</th><th>Destino</th><th>Valor</th><th>Obs.</th><th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+            let temIda = false;
+            let temVolta = false;
+            viagensPorVeiculo[veiculo].forEach(viagem => {
+                totalFreteVeiculo += viagem.valor || 0;
+                const dataViagem = viagem.data ? new Date(viagem.data + 'T00:00:00') : null;
+                const dataFormatada = dataViagem ? dataViagem.toLocaleDateString('pt-BR') : 'N/A';
+                const linha = `
+                    <tr>
+                        <td>${dataFormatada}</td>
+                        <td>${viagem.motorista || '-'}</td>
+                        <td>${viagem.colaborador || '-'}</td>
+                        <td>${viagem.cliente || '-'}</td>
+                        <td>${viagem.origem || '-'}</td>
+                        <td>${viagem.destino || '-'}</td>
+                        <td>${formatarValorBrasileiro(viagem.valor)}</td>
+                        <td>${viagem.observacoes || '-'}</td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn btn-warning action-btn" onclick="editarViagem('${viagem.id}')"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-danger action-btn" onclick="excluirViagem('${viagem.id}')"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>`;
+                if (viagem.tipo === 'ida') {
+                    tabelaIda += linha;
+                    temIda = true;
+                } else {
+                    tabelaVolta += linha;
+                    temVolta = true;
+                }
+            });
+            tabelaIda += `</tbody></table>`;
+            tabelaVolta += `</tbody></table>`;
+            veiculoCard.innerHTML = `
+                <h2 class="veiculo-title"><i class="fas fa-truck"></i> ${veiculo}</h2>
+                ${temIda ? tabelaIda : ''}
+                ${temVolta ? tabelaVolta : ''}
+                <div class="total">Total do Veículo: ${formatarValorBrasileiro(totalFreteVeiculo)}</div>`;
+            roteiroContainer.appendChild(veiculoCard);
+        }
+        const totalGeral = viagensFiltradas.reduce((acc, v) => acc + (v.valor || 0), 0);
+        roteiroContainer.innerHTML += `<div class="total" style="font-size: 1.5rem; text-align: center; margin-top: 2rem;">Total Geral: ${formatarValorBrasileiro(totalGeral)}</div>`;
+    }
+
+    function exportarParaPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        let y = 10;
+        doc.text("Roteiro de Viagens", 10, y);
+        y += 10;
+        viagensFiltradas.forEach((viagem, index) => {
+            const dataFormatada = viagem.data ? new Date(viagem.data + 'T00:00:00').toLocaleDateString('pt-BR') : 'N/A';
+            doc.text(`${index + 1}. Data: ${dataFormatada}, Veículo: ${viagem.veiculo || 'N/A'}, Tipo: ${viagem.tipo || 'N/A'}`, 10, y);
+            y += 7;
+            doc.text(`   Origem: ${viagem.origem || 'N/A'} -> Destino: ${viagem.destino || 'N/A'}`, 10, y);
+            y += 7;
+            doc.text(`   Cliente: ${viagem.cliente || 'N/A'}, Valor: ${formatarValorBrasileiro(viagem.valor)}`, 10, y);
+            y += 10;
+        });
+        doc.save("roteiro_viagens.pdf");
+    }
+
+    function exportarParaExcel() {
+        const dadosExport = viagensFiltradas.map(v => ({
+            Data: v.data ? new Date(v.data + 'T00:00:00').toLocaleDateString('pt-BR') : '',
+            Tipo: v.tipo || '',
+            Veículo: v.veiculo || '',
+            Motorista: v.motorista || '',
+            Colaborador: v.colaborador || '',
+            Cliente: v.cliente || '',
+            Origem: v.origem || '',
+            Destino: v.destino || '',
+            Valor: v.valor || 0,
+            Observações: v.observacoes || ''
+        }));
+        const ws = XLSX.utils.json_to_sheet(dadosExport);
+        ws['!cols'] = [{ wch: 10 }, { wch: 8 }, { wch: 20 }, { wch: 15 }, { wch: 15 }, { wch: 20 }, { wch: 20 }, { wch: 20 }, { wch: 12 }, { wch: 30 }];
+        for(let i = 2; i <= dadosExport.length + 1; i++) {
+            const cellRef = 'I' + i;
+            if(ws[cellRef]) {
+                ws[cellRef].t = 'n';
+                ws[cellRef].z = 'R$ #,##0.00';
+            }
+        }
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Viagens");
+        XLSX.writeFile(wb, "roteiro_viagens.xlsx");
+    }
+    
+    // Carregar viagens ao iniciar
+    carregarViagens();
+
+</script>
 </body>
 </html>
