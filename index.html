@@ -900,75 +900,95 @@
         roteiroContainer.innerHTML += `<div class="total" style="font-size: 1.5rem; text-align: center; margin-top: 2rem;">Total Geral: ${formatarValorBrasileiro(totalGeral)}</div>`;
     }
 
-    function exportarParaPDF() {
-        const { jsPDF } = window.jspdf;
-        const roteiroContainer = document.getElementById("roteiroContainer");
+    <script>
+function exportarParaPDF() {
+    const { jsPDF } = window.jspdf;
+    const roteiroContainer = document.getElementById("roteiroContainer");
+    
+    // Clonamos o container para modificar sem afetar o layout original
+    const containerClone = roteiroContainer.cloneNode(true);
+    
+    // Ajustes no clone para melhor visualização no PDF
+    containerClone.style.width = "100%";
+    containerClone.style.padding = "20px";
+    containerClone.style.boxSizing = "border-box";
+    
+    // Remove botões de ação que não fazem sentido no PDF
+    const actionButtons = containerClone.querySelectorAll('.action-buttons');
+    actionButtons.forEach(btn => btn.remove());
+    
+    // Adiciona o clone temporariamente ao corpo
+    const tempDiv = document.createElement('div');
+    tempDiv.appendChild(containerClone);
+    tempDiv.style.position = "absolute";
+    tempDiv.style.left = "-9999px";
+    document.body.appendChild(tempDiv);
+    
+    // Configurações para html2canvas
+    const options = {
+        scale: 2, // Melhor qualidade
+        useCORS: true,
+        allowTaint: true,
+        scrollY: 0,
+        width: containerClone.scrollWidth,
+        height: containerClone.scrollHeight,
+        windowWidth: containerClone.scrollWidth,
+        windowHeight: containerClone.scrollHeight
+    };
+    
+    html2canvas(containerClone, options).then(canvas => {
+        // Remove o clone temporário
+        document.body.removeChild(tempDiv);
         
-        // Adiciona um título ao PDF
-        const title = "Roteiro de Viagens";
-        const date = new Date().toLocaleDateString('pt-BR');
+        const imgData = canvas.toDataURL("image/png");
+        const pdf = new jsPDF("l", "mm", "a4"); // Modo paisagem
         
-        // Opções para o html2canvas
-        const options = {
-            scale: 2, // Aumenta a qualidade da imagem
-            useCORS: true, // Permite carregar imagens externas
-            allowTaint: true, // Permite carregar imagens de outras origens
-            scrollY: 0 // Remove qualquer scroll da página
-        };
+        // Adiciona título e data
+        pdf.setFontSize(18);
+        pdf.setTextColor(40);
+        pdf.text("Relatório Completo de Viagens", 148, 15, { align: 'center' });
         
-        // Usa html2canvas para capturar o layout renderizado
-        html2canvas(roteiroContainer, options).then(canvas => {
-            const imgData = canvas.toDataURL("image/png");
-            const pdf = new jsPDF("p", "mm", "a4");
+        pdf.setFontSize(12);
+        pdf.text(`Gerado em: ${new Date().toLocaleDateString('pt-BR')}`, 148, 22, { align: 'center' });
+        
+        // Calcula dimensões para o modo paisagem
+        const pageWidth = pdf.internal.pageSize.getWidth() - 20;
+        const pageHeight = pdf.internal.pageSize.getHeight() - 30;
+        
+        const imgProps = pdf.getImageProperties(imgData);
+        const pdfWidth = pageWidth;
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        
+        let position = 25; // Posição inicial após o cabeçalho
+        let currentPage = 1;
+        let heightLeft = pdfHeight;
+        
+        // Adiciona a imagem em páginas conforme necessário
+        while (heightLeft > 0) {
+            pdf.addImage(imgData, "PNG", 10, position, pdfWidth, pdfHeight);
+            heightLeft -= pageHeight;
             
-            // Adiciona o título e data no PDF
-            pdf.setFontSize(18);
-            pdf.text(title, 105, 15, { align: 'center' });
-            pdf.setFontSize(12);
-            pdf.text(`Gerado em: ${date}`, 105, 22, { align: 'center' });
+            // Adiciona número da página
+            pdf.setFontSize(10);
+            pdf.text(`Página ${currentPage}`, 148, pageHeight + 20, { align: 'center' });
             
-            const pageWidth = pdf.internal.pageSize.getWidth() - 20; // Margem de 10mm cada lado
-            const pageHeight = pdf.internal.pageSize.getHeight() - 30; // Margem superior e inferior
-            
-            const imgProps = pdf.getImageProperties(imgData);
-            const pdfWidth = pageWidth;
-            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-            
-            let position = 30; // Começa após o título
-            
-            // Se a imagem for maior que uma página
-            if (pdfHeight > pageHeight) {
-                let heightLeft = pdfHeight;
-                let currentPage = 1;
-                
-                while (heightLeft > 0) {
-                    pdf.addImage(imgData, "PNG", 10, position, pdfWidth, pdfHeight);
-                    heightLeft -= pageHeight;
-                    position -= pageHeight;
-                    
-                    if (heightLeft > 0) {
-                        pdf.addPage();
-                        currentPage++;
-                        position = 10; // Reset position for new page
-                    }
-                    
-                    // Adiciona número da página
-                    pdf.setFontSize(10);
-                    pdf.text(`Página ${currentPage}`, 105, pdf.internal.pageSize.getHeight() - 10, { align: 'center' });
-                }
-            } else {
-                pdf.addImage(imgData, "PNG", 10, position, pdfWidth, pdfHeight);
-                // Adiciona número da página
-                pdf.setFontSize(10);
-                pdf.text("Página 1", 105, pdf.internal.pageSize.getHeight() - 10, { align: 'center' });
+            if (heightLeft > 0) {
+                pdf.addPage("l"); // Nova página no modo paisagem
+                currentPage++;
+                position = 10; // Reset position for new page
+                heightLeft -= 15; // Ajuste para evitar sobreposição
             }
-            
-            pdf.save("roteiro_viagens.pdf");
-        }).catch(error => {
-            console.error("Erro ao gerar PDF:", error);
-            alert("Ocorreu um erro ao gerar o PDF. Por favor, tente novamente.");
-        });
-    }
+        }
+        
+        pdf.save("relatorio_viagens_completo.pdf");
+        
+    }).catch(error => {
+        console.error("Erro ao gerar PDF:", error);
+        document.body.removeChild(tempDiv);
+        alert("Ocorreu um erro ao gerar o PDF. Por favor, tente novamente.");
+    });
+}
+</script>
 
     function exportarParaExcel() {
         const dadosExport = viagensFiltradas.map(v => ({
