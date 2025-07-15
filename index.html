@@ -937,7 +937,6 @@
     });
 }
 
-
     function exportarParaExcel() {
         const dadosExport = viagensFiltradas.map(v => ({
             Data: v.data ? new Date(v.data + 'T00:00:00').toLocaleDateString('pt-BR') : '',
