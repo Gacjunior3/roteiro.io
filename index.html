@@ -898,23 +898,45 @@
         roteiroContainer.innerHTML += `<div class="total" style="font-size: 1.5rem; text-align: center; margin-top: 2rem;">Total Geral: ${formatarValorBrasileiro(totalGeral)}</div>`;
     }
 
-    function exportarParaPDF() {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
-        let y = 10;
-        doc.text("Roteiro de Viagens", 10, y);
-        y += 10;
-        viagensFiltradas.forEach((viagem, index) => {
-            const dataFormatada = viagem.data ? new Date(viagem.data + 'T00:00:00').toLocaleDateString('pt-BR') : 'N/A';
-            doc.text(`${index + 1}. Data: ${dataFormatada}, Veículo: ${viagem.veiculo || 'N/A'}, Tipo: ${viagem.tipo || 'N/A'}`, 10, y);
-            y += 7;
-            doc.text(`   Origem: ${viagem.origem || 'N/A'} -> Destino: ${viagem.destino || 'N/A'}`, 10, y);
-            y += 7;
-            doc.text(`   Cliente: ${viagem.cliente || 'N/A'}, Valor: ${formatarValorBrasileiro(viagem.valor)}`, 10, y);
-            y += 10;
-        });
-        doc.save("roteiro_viagens.pdf");
-    }
+   function exportarParaPDF() {
+    const { jsPDF } = window.jspdf;
+    const roteiroContainer = document.getElementById("roteiroContainer");
+
+    // Usa html2canvas para capturar o layout renderizado
+    html2canvas(roteiroContainer).then(canvas => {
+        const imgData = canvas.toDataURL("image/png");
+        const pdf = new jsPDF("p", "mm", "a4");
+
+        const pageWidth = pdf.internal.pageSize.getWidth();
+        const pageHeight = pdf.internal.pageSize.getHeight();
+
+        const imgProps = pdf.getImageProperties(imgData);
+        const pdfWidth = pageWidth;
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+        let position = 0;
+
+        // Se a imagem for maior que uma página
+        if (pdfHeight > pageHeight) {
+            let heightLeft = pdfHeight;
+            while (heightLeft > 0) {
+                pdf.addImage(imgData, "PNG", 0, position, pdfWidth, pdfHeight);
+                heightLeft -= pageHeight;
+                position -= pageHeight;
+
+                if (heightLeft > 0) {
+                    pdf.addPage();
+                    position = 0;
+                }
+            }
+        } else {
+            pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+        }
+
+        pdf.save("roteiro_viagens.pdf");
+    });
+}
+
 
     function exportarParaExcel() {
         const dadosExport = viagensFiltradas.map(v => ({
